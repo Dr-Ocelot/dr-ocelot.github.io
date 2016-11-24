@@ -1,0 +1,31 @@
+#body-id {
+/*    position: relative;   */
+/*    background-color: black;*/
+}
+
+#bg {  
+/*    position: fixed;*/
+    left: 0;
+    right: 0;
+    z-index: 1;
+    display: block;
+    
+    background-image: url(/img/mario-golf-gbc.png);
+    background-size: cover;
+    background-color: black;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: auto;
+    height: 800px;
+    
+    -webkit-filter: blur(10px) brightness(30%); /* Safari 6.0 - 9.0 */
+    filter: blur(10px) brightness(30%);
+}
+#content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    margin-left: 20px;
+    margin-right: 20px;
+}
