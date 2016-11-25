@@ -55,7 +55,7 @@
                         <img class='card-img-top img-fluid' src='/img/mario-golf-gbc-square.png' alt='Album Art'>
                         <div class='card-block text-xs-center'>
                             <h4 class='card-title'>Mario Golf (GBC) <span class='tag tag-success'>NEW</span></h4>
-                            <a href="mario-golf-gbc/" class="btn btn-outline-primary">More Info</a> <a href="https://drive.google.com/uc?export=download&id=0B__16BpeelslY1FmRUtYbjVkM3M" class="btn btn-outline-primary">Download</a>
+                            <a href="mario-golf-gbc/" class="btn btn-outline-primary" >More Info</a> <a href="https://drive.google.com/uc?export=download&id=0B__16BpeelslY1FmRUtYbjVkM3M" class="btn btn-outline-primary" data-toggle="mario-golf-gbc" data-placement='top' title="82 MB">Download</a>
                         </div>
                     </div>
                 </div>
@@ -63,4 +63,12 @@
             </div>
         </div>
     </div>
+    <script src='/js/jquery-3.1.1.min.js'></script>
+    <script src='/js/tether.min.js'></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script>
+$(document).ready(function(){
+    $('[data-toggle="mario-golf-gbc"]').tooltip(); 
+});
+</script>
 </body>
