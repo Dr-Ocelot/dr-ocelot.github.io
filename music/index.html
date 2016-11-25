@@ -16,13 +16,25 @@
     <div class='container'>
         <div class='jumbotron text-xs-center'>
             <h1 style='font-family: Josefin Slab, serif;'><strong>Game Soundtracks</strong></h1>
+            
         </div>
+        <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Quicklist
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="#mario-golf-gbc">Mario Golf (GBC)</a>
+                    <a class="dropdown-item" href="#super-mario-maker">Super Mario Maker</a>
+                    <a class="dropdown-item" href="#super-mario-world">Super Mario World</a>
+                </div>
+            </div><br>
         <div>
             <div class='row flex-items-xs-center'>
                 
 <!--                MARIO GOLF-->
                 <div class='col-sm-6 col-md-4 col-ld-3'>
-                    <div class='card'>
+                    <div class='card' id='mario-golf-gbc'>
                         <h3 class='card-header text-xs-center'>Game Boy Color</h3>
                         <img class='card-img-top img-fluid' src='/img/mario-golf-gbc-square.png' alt='Album Art'>
                         <div class='card-block text-xs-center'>
@@ -33,7 +45,7 @@
                 </div>
 <!--                MARIO MAKER-->
                 <div class='col-sm-6 col-md-4 col-ld-3'>
-                    <div class='card'>
+                    <div class='card' id='super-mario-maker'>
                         <h3 class='card-header text-xs-center'>Wii U</h3>
                         <img class='card-img-top img-fluid' width="600px" src='/img/mario-maker.webp' alt='Album Art'>
                         <div class='card-block text-xs-center'>
@@ -45,7 +57,7 @@
                 </div>
                 <!--                SMW-->
                 <div class='col-sm-6 col-md-4 col-ld-3'>
-                    <div class='card'>
+                    <div class='card' id='super-mario-world'>
                         <h3 class='card-header text-xs-center'>Super Nintendo</h3>
                         <img class='card-img-top img-fluid' id='' src='/img/super-mario-world.jpg' alt='Album Art'>
                         <div class='card-block text-xs-center'>
