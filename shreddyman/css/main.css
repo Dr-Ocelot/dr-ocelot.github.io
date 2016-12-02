@@ -1,0 +1,156 @@
+body {
+    padding: 0px;
+    margin: 0px;
+    font-family: Roboto, sans-serif;
+    background-color: #FAFAFA;
+}
+
+#subtitle {
+    font-size: 14px;
+    text-align: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.center-block {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.title-bar {
+    font-variant: small-caps;
+    box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .19), 0 6px 3px 0 rgba(0, 0, 0, .23);
+    text-align: center;
+    font-size: 36px;
+    font-family: Josefin Slab, serif;
+    padding: 5px;
+    background-color: #1976D2;
+    color: #ffffff;
+    z-index: 1000;
+    font-weight: bold;
+}
+
+.page-bar {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    text-align: center;
+    font-size: 24px;
+    padding: 5px;
+    background-color: #1E88E5;
+    color: #ffffff;
+    z-index;
+    999;
+    font-family: Josefin Slab, sans-serif;
+    animation-name: flash-act;
+    animation-duration: .25s;
+    animation-iteration-count: 2;
+}
+
+.nav-bar {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    text-align: center;
+    font-size: 24px;
+    padding: 5px;
+    background-color: #F5F5F5;
+    color: #ffffff;
+    z-index;
+    998;
+}
+
+.page {
+    background-color: #ffffff;
+    font-size: 16px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 5px 0 rgba(0, 0, 0, .23);
+    padding: 10px;
+    width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 24px;
+    text-align: justify;
+    color: rgba(0,0,0,.87)
+}
+
+.page-label {
+    display: inline-block;
+    width: 140px;
+    height: 30px;
+    padding-top: 5px;
+    background-color: #64B5F6;
+    box-shadow: 0 1px 1.5px 0 rgba(0, 0, 0, .12), 0 1px 1px 0 rgba(0, 0, 0, .24);
+    z-index: 2000;
+    color: black;
+    font-family: Josefin Slab, sans-serif;
+}
+
+.btn {
+    background-color: #FFAB40;
+    color: black;
+    padding: 7px;
+    box-shadow: 0 1px 1.5px 0 rgba(0, 0, 0, .12), 0 1px 1px 0 rgba(0, 0, 0, .24);
+    z-index: 2000;
+    transition: all 0.2s;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn:hover {
+    box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .19), 0 6px 3px 0 rgba(0, 0, 0, .23);
+    animation-name: flash-btn;
+    animation-duration: .25s;
+    animation-iteration-count: 2;
+    cursor: pointer;
+}
+
+.btn.disabled {
+    background-color: #FFD180;
+    cursor: not-allowed;
+    color: rgba(0, 0, 0, 0.5)
+}
+
+.btn.disabled:hover {
+    box-shadow: 0 1px 1.5px 0 rgba(0, 0, 0, .12), 0 1px 1px 0 rgba(0, 0, 0, .24);
+    animation-name: none;
+}
+
+.btn.round {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+.fine-print {
+    font-size: 5px;
+}
+@keyframes flash-btn {
+    0%,
+    40%,
+    100% {
+        background-color: #FFAB40
+    }
+    50%,
+    90% {
+        background-color: #FFD180
+    }
+}
+@keyframes flash-act {
+    0%,
+    40%,
+    100% {
+        color: #FFFFFF
+    }
+    50%,
+    90% {
+        color: #FFAB40
+    }
+}
+@keyframes add-color {
+    from {filter: saturate(20%)}
+    to {filter: saturate(100%)}
+}
