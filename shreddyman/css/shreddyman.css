@@ -28,8 +28,5 @@ body {
     height: 84vh;
     -ms-overflow-style: none
 }
-#navbar::-webkit-scrollbar {
-    width: 0px;  /* remove scrollbar space */
-    background: transparent;  /* optional: just make scrollbar invisible */
-    
-}
+
+
