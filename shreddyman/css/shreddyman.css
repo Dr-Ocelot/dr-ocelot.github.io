@@ -1,5 +1,15 @@
+@keyframes blur {
+    from {filter: blur(10px) brightness(150%);}
+    to {filter: blur(0px) brightness(100%);}
+}
 body {
     position: relative;
+    animation-name: blur;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+}
+div {
+    background-color: white;
 }
 .josefin-sans {
     font-family: Josefin Sans;
@@ -12,7 +22,16 @@ body {
     background-color: #3071db;
     border-radius: 6px;
 }
-.sticky {
+.sticky,#story {
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
+    position: sticky;
+    top: 0px;
+    padding-bottom: 10px
+}
+.sticky#navbar {
     position: -webkit-sticky;
     position: -moz-sticky;
     position: -ms-sticky;
@@ -31,4 +50,7 @@ body {
 
 #navbar::-webkit-scrollbar {
     width: 0px;
+}
+.whitebg {
+    background-color: white;
 }
