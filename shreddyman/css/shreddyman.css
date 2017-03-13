@@ -1,0 +1,25 @@
+body {
+    position: relative;
+}
+.josefin-sans {
+    font-family: Josefin Sans;
+}
+.f700 {
+    font-weight: 700;
+}
+.nav-link.active {
+    color: white;
+    background-color: #3071db;
+    border-radius: 6px;
+}
+.sticky {
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
+    position: sticky;
+    top: 15px;
+}
+.annoying {
+    font-family: Permanent Marker;
+}
