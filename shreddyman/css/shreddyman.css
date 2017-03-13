@@ -22,7 +22,14 @@ div {
     background-color: #3071db;
     border-radius: 6px;
 }
-.sticky,#story {
+.nav-link {
+    transition-duration: 0.1s;
+}
+.nav-link:hover:not(.active) {
+    background-color: #a3c6ff;
+    border-radius: 6px;
+}
+#story .sticky {
     position: -webkit-sticky;
     position: -moz-sticky;
     position: -ms-sticky;
