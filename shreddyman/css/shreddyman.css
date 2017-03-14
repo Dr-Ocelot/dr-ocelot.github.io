@@ -47,16 +47,19 @@ div {
     top: 15px;
 }
 @keyframes annoying {
-    from {transform: rotate(5deg)}
-    to {transform: rotate(-5deg)}
+    0% {transform: rotate(3deg) scale(0.9)}
+    25% {transform: rotate(-3deg)}
+    50% {transform: rotate(3deg) scale(1.1)}
+    75% {transform: rotate(-3deg)}
+    100% {transform: rotate(3deg) scale(0.9)}
 }
 .annoying {
     font-family: Permanent Marker;
     display: inline-block;
     animation-name: annoying;
-    animation-direction: alternate;
-    animation-timing-function: ease-in-out;
-    animation-duration: .1s;
+/*    animation-direction: alternate;*/
+    animation-timing-function: linear;
+    animation-duration: .15s;
     animation-iteration-count: infinite;
 }
 #navbar {
