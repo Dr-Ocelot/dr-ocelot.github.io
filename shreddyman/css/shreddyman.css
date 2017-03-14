@@ -74,3 +74,14 @@ div {
 .whitebg {
     background-color: white;
 }
+.sub {
+    transition-duration: 0.5s;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+.sub:active {
+    background-image:url(https://images-gmi-pmc.edge-generalmills.com/149d4d08-7628-4bb5-b892-af172df6b226.jpg);
+    background-position: center;
+    padding-bottom: 200px;
+    background-size: cover;
+}
