@@ -77,7 +77,14 @@ div {
 .sub {
     transition-duration: 0.5s;
     background-position: top;
+    cursor: default;
     background-repeat: no-repeat;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
 }
 .sub:active {
     background-image:url(https://images-gmi-pmc.edge-generalmills.com/149d4d08-7628-4bb5-b892-af172df6b226.jpg);
