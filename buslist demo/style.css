@@ -1,0 +1,14 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+.number-box {
+  text-align: center;
+}
+.number {
+  font-family: 'Roboto-Mono', monospace;
+  font-size: 3em
+}
+.arrived-text {
+  font-weight: bold;
+  font-size: 1em
+}

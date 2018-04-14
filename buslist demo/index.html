@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--LOAD MATERIALIZE-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <!--LOAD ROBOTO-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700" rel="stylesheet">
+    <!--LOAD CUSTOM CSS-->
+    <link rel='stylesheet' href='style.css'>
+    <link rel='stylesheet' href='light.css' title="Light">
+    <meta http-equiv="refresh" content="60">
+  </head>
+</html>
+<body>
+  <div class='container'>
+    <h4 style='text-align: center'><b>Y.A.L.E. CHERRY HILL BUS STATUS</b></h4>
+    <p style='text-align: center'>This page automatically refreshes every minute.</p>
+    <br>
+    <div class='input-field inline'>
+      <input type="text" id="bus-input" name="buschoice" maxlength="2" size='2'>
+      <label for="bus-input">Bus #</label>
+    </div>
+    
+    <button class='waves-effect waves-automatic btn-flat' onclick="hideBus()">HIDE BUS</button>
+    <button class='waves-effect waves-automatic btn-flat' onclick="showBus()">SHOW BUS</button>
+    <button class='waves-effect waves-automatic btn-flat'onclick="hideAll()">HIDE ALL</button>
+    <button class='waves-effect waves-automatic btn-flat'onclick="showAll()">SHOW All</button>
+    
+    <div class="input-field inline">
+      <select id='theme-selector' onchange="changeTheme()">
+        <option value="0">Light</option>
+        <option value="1">Dark</option>
+      </select>
+      <label>Theme</label>
+    </div>
+    
+    
+    
+    <div class='row'>
+      
+      <div class="col number-box" id="bus-1">
+        <div class="number">01</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-2">
+        <div class="number">02</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-3">
+        <div class="number">03</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-4">
+        <div class="number">04</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-5">
+        <div class="number">05</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-6">
+        <div class="number">06</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-7">
+        <div class="number">07</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-8">
+        <div class="number">08</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-9">
+        <div class="number">09</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-10">
+        <div class="number">10</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-11">
+        <div class="number">11</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-12">
+        <div class="number">12</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-13">
+        <div class="number">13</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-14">
+        <div class="number">14</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-15">
+        <div class="number">15</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-16">
+        <div class="number">16</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-17">
+        <div class="number">17</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-18">
+        <div class="number">18</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-19">
+        <div class="number">19</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-20">
+        <div class="number">20</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-21">
+        <div class="number">21</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-22">
+        <div class="number">22</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-23">
+        <div class="number">23</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-24">
+        <div class="number">24</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-25">
+        <div class="number">25</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-26">
+        <div class="number">26</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-27">
+        <div class="number">27</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-28">
+        <div class="number">28</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-29">
+        <div class="number">29</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-30">
+        <div class="number">30</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-31">
+        <div class="number">31</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-32">
+        <div class="number">32</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-33">
+        <div class="number">33</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-34">
+        <div class="number">34</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-35">
+        <div class="number">35</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-36">
+        <div class="number">36</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-37">
+        <div class="number">37</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-38">
+        <div class="number">38</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-39">
+        <div class="number">39</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-40">
+        <div class="number">40</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-41">
+        <div class="number">41</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-42">
+        <div class="number">42</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-43">
+        <div class="number">43</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-44">
+        <div class="number">44</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-45">
+        <div class="number">45</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-46">
+        <div class="number">46</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-47">
+        <div class="number">47</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-48">
+        <div class="number">48</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-49">
+        <div class="number">49</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-50">
+        <div class="number">50</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-51">
+        <div class="number">51</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-52">
+        <div class="number">52</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-53">
+        <div class="number">53</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-54">
+        <div class="number">54</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-55">
+        <div class="number">55</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-56">
+        <div class="number">56</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-57">
+        <div class="number">57</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-58">
+        <div class="number">58</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-59">
+        <div class="number">59</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-60">
+        <div class="number">60</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-61">
+        <div class="number">61</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-62">
+        <div class="number">62</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-63">
+        <div class="number">63</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-64">
+        <div class="number">64</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-65">
+        <div class="number">65</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-66">
+        <div class="number">66</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-67">
+        <div class="number">67</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-68">
+        <div class="number">68</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-69">
+        <div class="number">69</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-70">
+        <div class="number">70</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-71">
+        <div class="number">71</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-72">
+        <div class="number">72</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-73">
+        <div class="number">73</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-74">
+        <div class="number">74</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-75">
+        <div class="number">75</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      <div class="col number-box" id="bus-76">
+        <div class="number">76</div>
+        <div class="arrived-text">ARRIVED</div>
+      </div>
+      
+    </div>
+    
+    
+    
+    
+    
+  </div>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="jquery.cookie-1.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+  <script>
+    var busTotal = 76;
+    
+    var hiddenBusesCookie = $.cookie('hiddenbuses').split(",");
+    
+    var hiddenBuses = [];
+    
+    for (i=0;i<hiddenBusesCookie.length;i++) {
+      hiddenBuses.push($('#bus-' + hiddenBusesCookie[i]));
+    }
+        
+//    Initialise Dropdown
+    function initDropdown() {
+      $(document).ready(function(){
+        $('select').formSelect();
+      });
+    }
+    initDropdown();
+//    Store the array of hidden buses
+    function storeBuses() {
+      var hiddenBusesCookie = []
+      for (i=0;i<hiddenBuses.length;i++) {
+        hiddenBusesCookie.push(hiddenBuses[i][0].id.replace("bus-",""));
+      }
+      $.cookie('hiddenbuses', hiddenBusesCookie.join(","));
+    }
+    
+//    Hide and show desired buses
+    function modifyBuses() {
+      $('div.row div').show();
+      $.each(hiddenBuses, function() {
+          $(this).hide();
+      });
+    }
+    
+//    Function to remove hidden buses from array
+    function remove(array, element) {
+        var index = hiddenBuses.findIndex(x => x[0].id==element);
+
+      while (index !== -1) {
+          array.splice(index, 1);
+          var index = hiddenBuses.findIndex(x => x[0].id==element);
+      }
+    }
+    
+    function hideBus() {
+      if (hiddenBuses.findIndex(x => x[0].id=='bus-' + $('#bus-input').val()) == -1) {
+        hiddenBuses.push($('#bus-' + $('#bus-input').val()));
+      }
+      modifyBuses();
+      storeBuses();
+    }
+    function showBus() {
+      remove(hiddenBuses,'bus-' + $('#bus-input').val());
+      modifyBuses();
+      storeBuses();
+    }
+    function hideAll() {
+      hiddenBuses = [];
+      for (i = 1; i <= busTotal; i++) {
+        hiddenBuses.push($('#bus-' + i));
+      }
+      modifyBuses();
+      storeBuses();
+    }
+    
+    function showAll() {
+      hiddenBuses = [];
+      modifyBuses();
+      storeBuses();
+    }
+//    Apply desired theme
+    if ($.cookie('themepref') == "dark") {
+      useDark()
+    }
+    else {
+      useLight()
+    }
+//    Change theme from dropdown
+    function changeTheme() {
+      if ($('#theme-selector').val() == 0) {
+        useLight();
+      }
+      else {
+        useDark();
+      }
+    }
+//    Change to light theme
+
+    function useLight(){
+      cssLink = $('link[href*="dark.css"]');
+      cssLink.replaceWith('<link href="light.css" type="text/css" rel="stylesheet">');
+      document.cookie = "themepref=light"
+      document.getElementById("theme-selector").options.selectedIndex = 0;
+      initDropdown();
+    }
+//    Change to dark theme
+    var cssLink;
+    function useDark(){
+      cssLink = $('link[href*="light.css"]');
+      cssLink.replaceWith('<link href="dark.css" type="text/css" rel="stylesheet">');
+      document.cookie = "themepref=dark";
+      document.getElementById("theme-selector").options.selectedIndex = 1;
+      initDropdown();
+    }
+
+    
+
+    if (hiddenBusesCookie[0] !== "") {
+      modifyBuses();
+    }
+    else {
+      hiddenBuses = [];
+    }
+  </script>
+  <script>
+//    Bus RNG
+    for (i=1;i<=76;i++) {
+      $('#bus-' + i).removeClass('arrived')   
+      if (Math.floor(Math.random() * 3) == 1) {
+      $('#bus-' + i).addClass('arrived')   
+      }
+    }
+  </script>
+</body>
