@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--META TAGS-->
+    <meta charset="utf-8"> <!--future proofs the character set-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <!--makes the page actually work on mobile-->
+    <meta http-equiv="refresh" content="60"> <!--automatically refresh the page every minute-->
     <!--LOAD MATERIALIZE-->
+    <!--MATERIALIZE IS A REALLY COOL, OPEN-SOURCE CSS AND JS LIRBRARY BASED ON GOOGLE'S MATERIAL DEISGN STANDARDS-->
+    <!--MORE INFO: http://materializecss.com/-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-    <!--LOAD ROBOTO-->
+    <!--LOAD ROBOTO FONT-->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700" rel="stylesheet">
     <!--LOAD CUSTOM CSS-->
     <link rel='stylesheet' href='style.css'>
     <link rel='stylesheet' href='light.css' title="Light">
-    <meta http-equiv="refresh" content="60">
+    
   </head>
 </html>
 <body>
   <div class='container'>
-    <h4 style='text-align: center'><b>Y.A.L.E. CHERRY HILL BUS STATUS</b></h4>
+    <h4 style='text-align: center'><b>Y.A.L.E. SCHOOL CHERRY HILL BUS STATUS</b></h4>
+    <h5 style='text-align: center; margin-top: 0px; padding-top: 0px;'><b>LIVE DEMO</b></h5>
     <p style='text-align: center'>This page automatically refreshes every minute.</p>
     <br>
-    <div class='input-field inline'>
+    <div class='input-field inline'> <!--bus text input-->
       <input type="text" id="bus-input" name="buschoice" maxlength="2" size='2'>
       <label for="bus-input">Bus #</label>
     </div>
-    
-    <button class='waves-effect waves-automatic btn-flat' onclick="hideBus()">HIDE BUS</button>
+    <!--buttons-->
+    <button class='waves-effect waves-automatic btn-flat' onclick="hideBus()">HIDE BUS</button> 
     <button class='waves-effect waves-automatic btn-flat' onclick="showBus()">SHOW BUS</button>
     <button class='waves-effect waves-automatic btn-flat'onclick="hideAll()">HIDE ALL</button>
     <button class='waves-effect waves-automatic btn-flat'onclick="showAll()">SHOW All</button>
-    
+    <!--theme selector-->
     <div class="input-field inline">
       <select id='theme-selector' onchange="changeTheme()">
         <option value="0">Light</option>
@@ -40,7 +45,7 @@
     
     
     <div class='row'>
-      
+<!--      All of the tiles in the bus list. Lotsa markup!-->
       <div class="col number-box" id="bus-1">
         <div class="number">01</div>
         <div class="arrived-text">ARRIVED</div>
@@ -348,136 +353,146 @@
       
     </div>
     
-    
-    
-    
-    
+    <p style='text-align: center'>This is a live demo of the potential upcoming bus list. The 'arrived' buses are generated randomly upon the page loading.</p>
   </div>
+<!--  Load jQuery-->
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!--  Load jQuery Cookie-->
   <script src="jquery.cookie-1.4.1.min.js"></script>
+<!--  Load Materialize's Javascript-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+<!--  Custom JS-->
   <script>
-    var busTotal = 76;
+    var busTotal = 76; //CHANGE THIS TO THE TOTAL BUSES!
     
-    var hiddenBusesCookie = $.cookie('hiddenbuses').split(",");
-    
-    var hiddenBuses = [];
-    
-    for (i=0;i<hiddenBusesCookie.length;i++) {
-      hiddenBuses.push($('#bus-' + hiddenBusesCookie[i]));
+    if ($.cookie('hiddenbuses') != undefined) { //if the cookie for the hidden buses exists...
+      var hiddenBusesCookie = $.cookie('hiddenbuses').split(","); //transfer the cookie to a variable
     }
+    else { //if it doesn't exist
+      var hiddenBusesCookie = []; //create a blank variable
+    } //end if
+    
+    var hiddenBuses = []; //declares a blank variable for the hidden buses
+    
+    for (i=0;i<hiddenBusesCookie.length;i++) { //loops once for every entry in the hidden buses cookie
+      hiddenBuses.push($('#bus-' + hiddenBusesCookie[i])); //adds the currently selected array index to the hidden buses variable
+    } //end loop
         
-//    Initialise Dropdown
-    function initDropdown() {
-      $(document).ready(function(){
-        $('select').formSelect();
+//    Initialise Dropdown function
+    function initDropdown() { //     This code was given by the Materialize documentation.
+      $(document).ready(function(){// It allows the dropdown menu for the theme selector to work.
+        $('select').formSelect();//        
       });
     }
-    initDropdown();
-//    Store the array of hidden buses
-    function storeBuses() {
-      var hiddenBusesCookie = []
-      for (i=0;i<hiddenBuses.length;i++) {
-        hiddenBusesCookie.push(hiddenBuses[i][0].id.replace("bus-",""));
-      }
-      $.cookie('hiddenbuses', hiddenBusesCookie.join(","));
+    initDropdown();//runs the initialise dropdown function
+    
+//    Function to store the current array of hidden buses to a cookie
+    function storeBuses() { //declares the function
+      var hiddenBusesCookie = [] //clears the cookie variable
+      for (i=0;i<hiddenBuses.length;i++) { //loops once for every entry in the hidden buses variable
+        hiddenBusesCookie.push(hiddenBuses[i][0].id.replace("bus-","")); //adds the currently selected array index to the hidden buses cookie variable
+      } //end loop
+      $.cookie('hiddenbuses', hiddenBusesCookie.join(",")); //writes the hidden buses to a cookie
     }
     
-//    Hide and show desired buses
-    function modifyBuses() {
-      $('div.row div').show();
-      $.each(hiddenBuses, function() {
-          $(this).hide();
+//    Function to refresh which buses are hidden and which are shown
+    function modifyBuses() { //declares the function
+      $('div.row div').show(); //shows every bus
+      $.each(hiddenBuses, function() { //for each of the hidden buses in the array...
+          $(this).hide(); //hide it
       });
     }
     
 //    Function to remove hidden buses from array
-    function remove(array, element) {
-        var index = hiddenBuses.findIndex(x => x[0].id==element);
+    function remove(array, element) { //declares the function
+        var index = hiddenBuses.findIndex(x => x[0].id==element); //creates a variable for the index in the hidden buses array for which the requested bus is located
 
-      while (index !== -1) {
-          array.splice(index, 1);
-          var index = hiddenBuses.findIndex(x => x[0].id==element);
-      }
+      while (index !== -1) { //while loop to handle the possibility that the hidden bus entry was somehow placed in more than once
+          array.splice(index, 1); //removes the entry
+          var index = hiddenBuses.findIndex(x => x[0].id==element); //checks if there are any more entries
+      } //end loop
     }
     
-    function hideBus() {
-      if (hiddenBuses.findIndex(x => x[0].id=='bus-' + $('#bus-input').val()) == -1) {
-        hiddenBuses.push($('#bus-' + $('#bus-input').val()));
-      }
-      modifyBuses();
-      storeBuses();
+//    Function to hide the bus typed in the box
+    function hideBus() { //declares the function
+      if (hiddenBuses.findIndex(x => x[0].id=='bus-' + $('#bus-input').val()) == -1) { //if the bus requesting to be hidden isn't already hidden...
+        hiddenBuses.push($('#bus-' + $('#bus-input').val())); //hide it (adds the bus to the list of hidden buses)
+      } //end if
+      modifyBuses(); //refreshes buses
+      storeBuses(); //stores the cookie
     }
-    function showBus() {
-      remove(hiddenBuses,'bus-' + $('#bus-input').val());
-      modifyBuses();
-      storeBuses();
+//    Function to show the bus typed in the box
+    function showBus() { //declares the function
+      remove(hiddenBuses,'bus-' + $('#bus-input').val()); //takes the bus out of the index of hidden buses
+      modifyBuses(); //refreshes buses
+      storeBuses(); //stores the cookie
     }
-    function hideAll() {
-      hiddenBuses = [];
-      for (i = 1; i <= busTotal; i++) {
-        hiddenBuses.push($('#bus-' + i));
+//    Function to hide all of the buses
+    function hideAll() { //declares the function
+      hiddenBuses = []; //clears the current index of hidden buses
+      for (i = 1; i <= busTotal; i++) { //loops for every bus there is (this is where the total bus variable is used!!)
+        hiddenBuses.push($('#bus-' + i)); //adds the current bus in the loop to the list of hidden buses
       }
-      modifyBuses();
-      storeBuses();
+      modifyBuses(); //refreshes buses
+      storeBuses(); //stores the cookie
+    }
+//    Function to show all of the buses
+    function showAll() { //declares the function
+      hiddenBuses = []; //clears the current index of hidden buses
+      modifyBuses(); //refreshes buses
+      storeBuses(); //stores the cookie
+    }
+//    Apply the selected theme upon the page loading
+    if ($.cookie('themepref') == "light") { //if the theme cookie specifies the user chose 'light'
+      useLight() //load the light theme
+    }
+    else { //otherwise
+      useDark() //load the dark theme
+    }
+//    Function to change theme after selecting one from the dropdown
+    function changeTheme() { //declares the function
+      if ($('#theme-selector').val() == 0) { //if they chose the first value (light theme)
+        useLight(); //load the light theme
+      }
+      else { //otherwise
+        useDark(); //load the dark theme
+      } //end if
     }
     
-    function showAll() {
-      hiddenBuses = [];
-      modifyBuses();
-      storeBuses();
-    }
-//    Apply desired theme
-    if ($.cookie('themepref') == "dark") {
-      useDark()
-    }
-    else {
-      useLight()
-    }
-//    Change theme from dropdown
-    function changeTheme() {
-      if ($('#theme-selector').val() == 0) {
-        useLight();
-      }
-      else {
-        useDark();
-      }
-    }
-//    Change to light theme
-
-    function useLight(){
-      cssLink = $('link[href*="dark.css"]');
-      cssLink.replaceWith('<link href="light.css" type="text/css" rel="stylesheet">');
-      document.cookie = "themepref=light"
-      document.getElementById("theme-selector").options.selectedIndex = 0;
-      initDropdown();
+//    Function to change to light theme
+    var cssLink; //creates a variable to find which css is being used
+    function useLight(){ //declares the function
+      cssLink = $('link[href*="dark.css"]'); //sets the variable to look for the a style for the dark theme
+      cssLink.replaceWith('<link href="light.css" type="text/css" rel="stylesheet">'); //replaces that css with the light theme
+      document.cookie = "themepref=light" //sets the cookie to light theme
+      document.getElementById("theme-selector").options.selectedIndex = 0; //changes the dropdown to the light theme
+      initDropdown(); //refreshes dropdown
     }
 //    Change to dark theme
-    var cssLink;
-    function useDark(){
-      cssLink = $('link[href*="light.css"]');
-      cssLink.replaceWith('<link href="dark.css" type="text/css" rel="stylesheet">');
-      document.cookie = "themepref=dark";
-      document.getElementById("theme-selector").options.selectedIndex = 1;
-      initDropdown();
+    function useDark(){ //declares the function
+      cssLink = $('link[href*="light.css"]'); //sets the variable to look for the a style for the light theme
+      cssLink.replaceWith('<link href="dark.css" type="text/css" rel="stylesheet">'); //replaces that css with the dark theme
+      document.cookie = "themepref=dark"; //sets the cookie to dark theme
+      document.getElementById("theme-selector").options.selectedIndex = 1; //changes the dropdown to the dark theme
+      initDropdown(); //refreshes dropdown
     }
 
-    
-
-    if (hiddenBusesCookie[0] !== "") {
-      modifyBuses();
+//    Applies the hidden bus settings
+    if (hiddenBusesCookie[0] !== "") { //if the cookie isn't blank
+      modifyBuses(); //refresh the buses
     }
-    else {
-      hiddenBuses = [];
+    else { //otherwise
+      hiddenBuses = []; //set the hiddenBuses array to be blank
     }
   </script>
   <script>
-//    Bus RNG
-    for (i=1;i<=76;i++) {
-      $('#bus-' + i).removeClass('arrived')   
-      if (Math.floor(Math.random() * 3) == 1) {
-      $('#bus-' + i).addClass('arrived')   
+//    Bus RNG (used for the demostration page)
+    //THIS SHOULD NOT RUN ON THE ACTUAL SITE
+    for (i=1;i<=busTotal;i++) { //loops for every bus on the page
+      $('#bus-' + i).removeClass('arrived') //removes the arrived class if they have it   
+      if (Math.floor(Math.random() * 3) == 1) { //if the 1/3 chance was successful...
+      $('#bus-' + i).addClass('arrived') //make the bus appear as arrived
       }
-    }
+    } //end loop
   </script>
 </body>
