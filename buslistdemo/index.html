@@ -443,11 +443,11 @@
       storeBuses(); //stores the cookie
     }
 //    Apply the selected theme upon the page loading
-    if ($.cookie('themepref') == "light") { //if the theme cookie specifies the user chose 'light'
-      useLight() //load the light theme
+    if ($.cookie('themepref') == "dark") { //if the theme cookie specifies the user chose 'dark'
+      useDark() //load the dark theme
     }
     else { //otherwise
-      useDark() //load the dark theme
+      useLight() //load the light theme (whatever is put here will be the default)
     }
 //    Function to change theme after selecting one from the dropdown
     function changeTheme() { //declares the function
