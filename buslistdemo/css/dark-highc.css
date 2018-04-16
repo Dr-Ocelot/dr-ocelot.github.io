@@ -79,15 +79,17 @@ input[type=search]:not(.browser-default):focus:not([readonly]) + label,
 textarea.materialize-textarea:focus:not([readonly]) + label {
   color: #FFF;
 }
-.switch label input[type=checkbox]:checked+.lever {
+.switch label input[type=checkbox]+.lever {
   background-color: #FFFE;
 }
-.switch label input[type=checkbox]:checked + .lever:after {
-  background-color: #FFF;
+.switch label input[type=checkbox] + .lever {
+  background-color: #000;
 }
 input[type=checkbox]:checked:not(:disabled) ~ .lever:active::before,
 input[type=checkbox]:checked:not(:disabled).tabbed:focus ~ .lever::before {
-  -webkit-transform: scale(2.4);
-          transform: scale(2.4);
   background-color: rgba(255, 255, 255, 0.15);
+}
+
+.select-wrapper .caret {
+  fill: rgba(255, 255, 255, 0.87);
 }

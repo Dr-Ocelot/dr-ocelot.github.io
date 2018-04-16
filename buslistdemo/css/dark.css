@@ -79,3 +79,14 @@ input[type=search]:not(.browser-default):focus:not([readonly]) + label,
 textarea.materialize-textarea:focus:not([readonly]) + label {
   color: #FFEB3B;
 }
+.switch label input[type=checkbox]:checked+.lever {
+  background-color: #FFFE;
+}
+input[type=checkbox]:not(:disabled) ~ .lever,
+input[type=checkbox]:checked:not(:disabled).tabbed:focus ~ .lever::before {
+  background-color: #FFFC;
+}
+
+.select-wrapper .caret {
+  fill: rgba(255, 255, 255, 0.87);
+}
