@@ -1,0 +1,84 @@
+.arrived {
+  background-color: #000;
+  color: #FFF;
+}
+:not(.arrived).number-box {
+  color: #000;
+}
+:not(.arrived).arrived-text {
+  color: #FFF;
+}
+
+
+
+.waves-effect.waves-automatic .waves-ripple {
+   /* The alpha value allows the text and background color
+   of the button to still show through. */
+    background-color: #00000055;
+    color: #000;
+    
+  }
+
+input:not([type]):focus:not([readonly]),
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=url]:not(.browser-default):focus:not([readonly]),
+input[type=time]:not(.browser-default):focus:not([readonly]),
+input[type=date]:not(.browser-default):focus:not([readonly]),
+input[type=datetime]:not(.browser-default):focus:not([readonly]),
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]),
+input[type=tel]:not(.browser-default):focus:not([readonly]),
+input[type=number]:not(.browser-default):focus:not([readonly]),
+input[type=search]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid #000;
+  -webkit-box-shadow: 0 1px 0 0 #000;
+          box-shadow: 0 1px 0 0 #000;
+}
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:before,
+[type="radio"].with-gap:checked + span:after {
+  border: 2px solid #000;
+}
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:after {
+  background-color: #000;
+}
+
+.select-wrapper input.select-dropdown:focus {
+  border-bottom: 1px solid #000;
+}
+.dropdown-content li > a, .dropdown-content li > span {
+  color: #000;
+}
+
+input:not([type]):focus:not([readonly]) + label,
+input[type=text]:not(.browser-default):focus:not([readonly]) + label,
+input[type=password]:not(.browser-default):focus:not([readonly]) + label,
+input[type=email]:not(.browser-default):focus:not([readonly]) + label,
+input[type=url]:not(.browser-default):focus:not([readonly]) + label,
+input[type=time]:not(.browser-default):focus:not([readonly]) + label,
+input[type=date]:not(.browser-default):focus:not([readonly]) + label,
+input[type=datetime]:not(.browser-default):focus:not([readonly]) + label,
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]) + label,
+input[type=tel]:not(.browser-default):focus:not([readonly]) + label,
+input[type=number]:not(.browser-default):focus:not([readonly]) + label,
+input[type=search]:not(.browser-default):focus:not([readonly]) + label,
+textarea.materialize-textarea:focus:not([readonly]) + label {
+  color: #000;
+}
+.switch label input[type=checkbox]:checked+.lever {
+  background-color: #000A;
+}
+.switch label input[type=checkbox]:checked + .lever:after {
+  background-color: #000;
+}
+input[type=checkbox]:checked:not(:disabled) ~ .lever:active::before,
+input[type=checkbox]:checked:not(:disabled).tabbed:focus ~ .lever::before {
+  -webkit-transform: scale(2.4);
+          transform: scale(2.4);
+  background-color: rgba(0, 0, 0, 0.15);
+}

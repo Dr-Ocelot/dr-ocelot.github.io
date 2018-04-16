@@ -13,26 +13,40 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700" rel="stylesheet">
     <!--LOAD CUSTOM CSS-->
-    <link rel='stylesheet' href='style.css'>
-    <link rel='stylesheet' href='light.css' title="Light">
-    
+    <link rel='stylesheet' href='css/style.css'>
+    <link rel='stylesheet' href='css/light.css' title="Light" id='theme-css'>
+    <!--FAVICON-->
+    <link rel='icon' href="img/y.png">
+    <!--ANDROID THEME COLOR-->
+    <meta name="theme-color" content="#ffffff" id="bar-color">
   </head>
 </html>
 <body>
   <div class='container'>
-    <h4 style='text-align: center'><b>Y.A.L.E. SCHOOL CHERRY HILL BUS STATUS</b></h4>
-    <h5 style='text-align: center; margin-top: 0px; padding-top: 0px;'><b>LIVE DEMO</b></h5>
-    <p style='text-align: center'>This page automatically refreshes every minute.</p>
+    <div class="row">
+      <div class='col m4'>
+        <img src="img/logo.png" alt="Y.A.L.E. logo" height="128px" style="margin-top: 20px;" id="logo">
+      </div>
+      <div class='col m8'>
+        <h4 style='text-align: right'><b>CHERRY HILL BUS STATUS</b></h4>
+        <h5 style='text-align: right; margin-top: 0px; padding-top: 0px;'><b>LIVE DEMO</b></h5>
+        <p style='text-align: right'>This page automatically refreshes every minute.</p>
+      </div>
+    </div>
     <br>
     <div class='input-field inline'> <!--bus text input-->
       <input type="text" id="bus-input" name="buschoice" maxlength="2" size='2'>
       <label for="bus-input">Bus #</label>
     </div>
     <!--buttons-->
-    <button class='waves-effect waves-automatic btn-flat' onclick="hideBus()">HIDE BUS</button> 
-    <button class='waves-effect waves-automatic btn-flat' onclick="showBus()">SHOW BUS</button>
-    <button class='waves-effect waves-automatic btn-flat'onclick="hideAll()">HIDE ALL</button>
-    <button class='waves-effect waves-automatic btn-flat'onclick="showAll()">SHOW All</button>
+    <span style="display:inline-block">
+      <button class='waves-effect waves-automatic btn-flat' onclick="hideBus()">HIDE BUS</button> 
+      <button class='waves-effect waves-automatic btn-flat' onclick="showBus()">SHOW BUS</button>
+    </span>
+    <span style="display:inline-block">
+      <button class='waves-effect waves-automatic btn-flat'onclick="hideAll()">HIDE ALL</button>
+      <button class='waves-effect waves-automatic btn-flat'onclick="showAll()">SHOW All</button>
+    </span>
     <!--theme selector-->
     <div class="input-field inline">
       <select id='theme-selector' onchange="changeTheme()">
@@ -41,6 +55,14 @@
       </select>
       <label>Theme</label>
     </div>
+    <!--high contrast tickbox-->
+    <span class="switch" onclick="highContrast()" style="display:inline-block">
+      <label>
+        <input type="checkbox" id="high-contrast-switch">
+        <span class="lever"></span>
+        <span>High Contrast</span>
+      </label>
+    </span>
     
     
     
@@ -356,11 +378,11 @@
     <p style='text-align: center'>This is a live demo of the potential upcoming bus list. The 'arrived' buses are generated randomly upon the page loading.</p>
   </div>
 <!--  Load jQuery-->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <!--  Load jQuery Cookie-->
-  <script src="jquery.cookie-1.4.1.min.js"></script>
+  <script src="js/jquery.cookie-1.4.1.min.js"></script>
 <!--  Load Materialize's Javascript-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+  <script src="js/materialize.min.js"></script>
 <!--  Custom JS-->
   <script>
     var busTotal = 76; //CHANGE THIS TO THE TOTAL BUSES!
@@ -442,6 +464,9 @@
       modifyBuses(); //refreshes buses
       storeBuses(); //stores the cookie
     }
+    if ($.cookie('highcontrast') == "true") {
+      $('#high-contrast-switch').prop('checked', true)
+    }
 //    Apply the selected theme upon the page loading
     if ($.cookie('themepref') == "dark") { //if the theme cookie specifies the user chose 'dark'
       useDark() //load the dark theme
@@ -461,20 +486,46 @@
     
 //    Function to change to light theme
     var cssLink; //creates a variable to find which css is being used
-    function useLight(){ //declares the function
-      cssLink = $('link[href*="dark.css"]'); //sets the variable to look for the a style for the dark theme
-      cssLink.replaceWith('<link href="light.css" type="text/css" rel="stylesheet">'); //replaces that css with the light theme
+    function useLight() { //declares the function
       document.cookie = "themepref=light" //sets the cookie to light theme
       document.getElementById("theme-selector").options.selectedIndex = 0; //changes the dropdown to the light theme
+      $("#bar-color").attr("content", "#ffffff"); //update theme color
+      if (!$('#high-contrast-switch').prop('checked')) { //declares the function
+        $("#theme-css").replaceWith('<link href="css/light.css" type="text/css" rel="stylesheet" id="theme-css">'); //replaces that css with the light theme
+        $("#logo").attr("src", "img/logo.png"); //replace the logo
+        document.cookie = "highcontrast=false"; //update high contrast cookie
+      } 
+      else { //if using high contrast
+        $("#theme-css").replaceWith('<link href="css/light-highc.css" type="text/css" rel="stylesheet" id="theme-css">'); //replaces that css with the lighthc theme
+        $("#logo").attr("src", "img/logo-monochrome.png"); //replace the logo
+        document.cookie = "highcontrast=true"; //update high contrast cookie
+      }
       initDropdown(); //refreshes dropdown
     }
 //    Change to dark theme
-    function useDark(){ //declares the function
-      cssLink = $('link[href*="light.css"]'); //sets the variable to look for the a style for the light theme
-      cssLink.replaceWith('<link href="dark.css" type="text/css" rel="stylesheet">'); //replaces that css with the dark theme
+    function useDark() { //declares the function
       document.cookie = "themepref=dark"; //sets the cookie to dark theme
       document.getElementById("theme-selector").options.selectedIndex = 1; //changes the dropdown to the dark theme
+      $("#logo").attr("src", "img/logo-monochrome-white.png"); //replace the logo
+      if (!$('#high-contrast-switch').prop('checked')) { //if using high contrast
+        $("#theme-css").replaceWith('<link href="css/dark.css" type="text/css" rel="stylesheet" id="theme-css">'); //replaces that css with the dark theme
+        $("#bar-color").attr("content", "#111111"); //update theme color
+        document.cookie = "highcontrast=false"; //update high contrast cookie
+      }
+      else { //otherwise
+        $("#theme-css").replaceWith('<link href="css/dark-highc.css" type="text/css" rel="stylesheet" id="theme-css">'); //replaces that css with the darkhc theme
+        document.cookie = "highcontrast=true"; //update high contrast cookie
+      }
       initDropdown(); //refreshes dropdown
+    }
+//    Function for the high contrast switch
+    function highContrast() { //declares the function
+      if ($('#theme-selector').val() == 0) { //if they chose the first value (light theme)
+        useLight(); //load the light theme
+      }
+      else { //otherwise
+        useDark(); //load the dark theme
+      } //
     }
 
 //    Applies the hidden bus settings
