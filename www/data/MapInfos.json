@@ -1,6 +1,0 @@
-[
-null,
-{"id":1,"expanded":true,"name":"MAP001","order":1,"parentId":0,"scrollX":788,"scrollY":541},
-{"id":2,"expanded":false,"name":"Forest Town","order":3,"parentId":3,"scrollX":1140,"scrollY":1387},
-{"id":3,"expanded":true,"name":"MAP003","order":2,"parentId":1,"scrollX":788,"scrollY":541}
-]
