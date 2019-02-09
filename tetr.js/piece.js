@@ -39,29 +39,7 @@ Piece.prototype.new = function(index) {
   this.dirty = true;
   this.dead = false;
   if (settings.NextSound == 1) {
-    switch (preview.grabBag[0]) {
-    case 0:
-      sound.playse("piece0");
-      break;
-    case 1:
-      sound.playse("piece1");
-      break;
-    case 2:
-      sound.playse("piece2");
-      break;
-    case 3:
-      sound.playse("piece3");
-      break;
-    case 4:
-      sound.playse("piece4");
-      break;
-    case 5:
-      sound.playse("piece5");
-      break;
-    case 6:
-      sound.playse("piece6");
-      break;
-  }
+    sound.playse("piece"+preview.grabBag[0])
   }
   
   // TODO Do this better. Make clone object func maybe.

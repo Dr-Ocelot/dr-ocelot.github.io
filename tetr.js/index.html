@@ -2,10 +2,12 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <link rel="icon" href="favicon_it0_icon.ico">
   <meta name="viewport"
         content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width"/>
   <title>Tetr.js Enhanced</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,500,700|Roboto:300,400,500,700" rel="stylesheet">
   <!--<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-554c83a8661bf358" async="async"></script>-->
 </head>
 <body>
@@ -26,7 +28,7 @@
 
   <!-- Canvases -->
   <div id="d">
-    <h3>Hold</h3>
+    <h3 style="font-weight: 300;">Hold</h3>
 
     <div id="a">
       <canvas id="hold"></canvas>
@@ -37,19 +39,19 @@
 
     <table id="stats">
       <tr>
-        <th id="score">0</th>
+        <th style="font-family: 'Roboto Mono'; font-weight: 700" id="score">0</th>
         <th>Score</th>
       </tr>
       <tr>
-        <td id="levelline"><div id="level"></div><div id="line">0</div></td>
+        <td id="levelline" style="font-family: 'Roboto Mono'; font-weight: 300"><div id="level"></div><div id="line" style="font-family: 'Roboto Mono'; font-weight: 300">0</div></td>
         <th>Line</th>
       </tr>
       <tr>
-        <td id="piece">0</td>
+        <td id="piece" style="font-family: 'Roboto Mono'; font-weight: 300">0</td>
         <th>Piece</th>
       </tr>
       <tr>
-        <th id="time"><canvas></canvas></th>
+        <th id="time" ><canvas></canvas></th>
       </tr>
     </table>
   </div>
@@ -64,30 +66,32 @@
     </div>
 
     <nav class="menu on">
-      <h1>Tetr.js Enhanced</h1>
+      <img style="margin: 10px" width="72%" src=tetrjslogoenhanced.svg>
+<!--      <h1 style="font-weight: 4;font-size: 2rem;margin: 0px">Tetr.js Enhanced</h1>-->
 
-      <p>designed by simonlc<br>
+      <p style=margin:3px>designed by simonlc<br>
         overhauled by farter<br>
         enhanced by Dr Ocelot</p>
-      <p>forked from: <a class="link" href="https://github.com/farteryhr/tetr.js/tree/gh-pages">&gt;&gt;Dig v0.58 by farter</a><br/>
+      <p style=margin:5px;>forked from: <a class="link" href="https://github.com/farteryhr/tetr.js/tree/gh-pages">&gt;&gt;Dig v0.58 by farter</a><br/>
 
-      <div class="btn-container">
-        <a class="btn" onclick="init(0)"><i class="material-icons">&#xE3E7;</i> Sprint</a>
+      <div class="btn-container" style="margin: 0px">
         <a class="btn" onclick="init(1)"><i class="material-icons">&#xE153;</i> Marathon</a>
+        <a class="btn" onclick="init(6)"><i class="material-icons">&#xE01F;</i> Master</a>
+        <a class="btn" onclick="init(0)"><i class="material-icons">&#xE3E7;</i> Sprint 40</a>
+        <a class="btn" onclick="init(5)"><i class="material-icons">&#xE2C3;</i> SprinT 200</a>
         <!-- <a class="btn" onclick="init(2)">Play Ultra</a> -->
-        <a class="btn" onclick="init(3,{digOffset:0})"><i class="material-icons">&#xE800;</i> Dig!</a>
+        <a class="btn" onclick="init(3,{digOffset:0})"><i class="material-icons">&#xE800;</i> Survival</a>
         <a class="btn" onclick="init(4,{digraceType:'easy'})"><i class="material-icons">&#xE91D;</i> Dig Race</a>
-        <a class="btn" onclick="init(5)"><i class="material-icons">&#xE2C3;</i> Zen</a>
-
+        <a class="btn highlight" onclick="menu(7,1);this.classList.remove('highlight')"><i class="material-icons">&#xE8E5;</i> Special Modes</a>
         <a class="btn" onclick="menu(2)" id="btnbinds"><i class="material-icons">&#xE021;</i> Controls</a>
         <a class="btn" onclick="menu(1)"><i class="material-icons">&#xE869;</i> Settings</a>
         <a class="btn" onclick="menu(6,1)"><i class="material-icons">&#xE04A;</i> Replay</a>
-        <a class="btn highlight" onclick="menu(7,1);this.classList.remove('highlight')"><i class="material-icons">&#xE8E5;</i> Harder</a>
+        
       </div>
     </nav>
 
     <div class="menu">
-      <h2>Settings</h2>
+      <h2 style="margin:0px">Settings</h2>
 
       <div id="settings">
       </div>
@@ -95,11 +99,11 @@
     </div>
 
     <div class="menu">
-      <h2>Controls</h2>
+      <h2 style="margin:0px">Controls</h2>
 
-      <p>Click on the item you want to change, then press any key.
+      <p style="margin: 0px">Click on the item you want to change, then press any key.
        </p>
-      <table id="controls">
+      <table id="controls" style="margin-top:0px;">
         <tr>
           <th>Move <i class="material-icons">&#xE5C4;</i></th>
           <td id="moveLeft">←</td>
@@ -163,9 +167,9 @@
 
     <nav id="pause" class="menu">
       <div class="btn-container btn-container-bottom">
-        <a class="btn" onclick="unpause()">Return</a>
-        <a class="btn" onclick="init(gametype,gameparams)">Retry</a>
-        <a class="btn" onclick="menu(0)">Back</a>
+        <a class="btn" onclick="unpause()">Resume</a>
+        <a class="btn" onclick="init(gametype,gameparams)">Restart</a>
+        <a class="btn" onclick="menu(0)">Main Menu</a>
       </div>
     </nav>
 
@@ -188,21 +192,22 @@
     </nav>
 
     <nav class="menu">
-      <h1>Tetr.js - Dig</h1>
-      <p>deep♂dark♂fantasy</p>
-      <div class="btn-container">
-        <a class="btn" onclick="init(3,{digOffset:500})"><i class="material-icons">&#xE3A8;</i> Dig - 500+</a>
-        <a class="btn" onclick="init(3,{digOffset:1000})"><i class="material-icons">&#xE3A7;</i> Dig - 1000+</a>
-        <a class="btn" onclick="init(3,{digOffset:1500})"><i class="material-icons">&#xE3A6;</i> Dig - 1500+</a>
-        <a class="btn" onclick="init(3,{digOffset:2000})"><i class="material-icons">&#xE3E4;</i> NUKE</a>
-        <a class="btn" onclick="init(4,{digraceType:'checker'})"><i class="material-icons">&#xE540;</i> Dig Hard</a>
-        <a class="btn" onclick="init(6)"><i class="material-icons">&#xE01F;</i> 20G</a>
-        <a class="btn" onclick="init(7)"><i class="material-icons">&#xE034;</i> Dig Zen</a>
-        <a class="btn" onclick="init(0,{pieceSet:1})"><i class="material-icons"></i> Spr_nt</a>
-        <a class="btn" onclick="init(0,{pieceSet:2})"><i class="material-icons"></i> Heaven</a>
+      <h1 style="font-weight: 4;font-size: 1.5rem;margin: 0px">Tetr.js Enhanced</h1>
+      <p style="margin: 0px">Special Modes</p>
+      <div style="margin: 0px" class="btn-container">
+        
+        <a class="btn" onclick="init(4,{digraceType:'checker'})"><i class="material-icons">&#xE540;</i> Dig Race Pro</a>
+        <a class="btn" onclick="init(7)"><i class="material-icons">&#xE034;</i> Lockstep Survival</a>
+        <a class="btn" onclick="init(3,{digOffset:500})"><i class="material-icons">&#xE3A8;</i> Survival Lv 2</a>
+        <a class="btn" onclick="init(3,{digOffset:1000})"><i class="material-icons">&#xE3A7;</i> Survival Lv 3</a>
+        <a class="btn" onclick="init(3,{digOffset:1500})"><i class="material-icons">&#xE3A6;</i> Survival Lv 4</a>
+        <a class="btn" onclick="init(3,{digOffset:2000})"><i class="material-icons">&#xE3E4;</i> Survival Lv 5</a>
+        
+        <a class="btn" onclick="init(0,{pieceSet:1})"><i class="material-icons"></i> Spr<span class="flickering">i</span>nt 40</a>
+        <a class="btn" onclick="init(0,{pieceSet:2})"><i class="material-icons"></i> I Sprint 40</a>
         <a class="btn" onclick="init(0,{backFire:1})"><i class="material-icons"></i> Backfire</a>
-        <a class="btn" onclick="init(0,{backFire:2})"><i class="material-icons"></i> Backfire2</a>
-        <a class="btn" onclick="init(0,{backFire:3})"><i class="material-icons"></i> Backfire3</a>
+        <a class="btn" onclick="init(0,{backFire:2})"><i class="material-icons"></i> Backfire Pro</a>
+        <a class="btn" onclick="init(0,{backFire:3})"><i class="material-icons"></i> Backfire Master</a>
         
         <a class="btn" onclick="menu(void 0,-1)">Back</a>
       </div>
@@ -211,7 +216,7 @@
   </div>
 
   <div id="c">
-    <h3>Next</h3>
+    <h3 style="font-weight: 300;">Next</h3>
     <canvas id="preview"></canvas>
   </div>
 

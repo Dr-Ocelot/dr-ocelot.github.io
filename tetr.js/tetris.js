@@ -926,7 +926,7 @@ function resize() {
   timeCanvas.width = d.clientWidth;
   timeCanvas.height = timeCanvas.clientHeight || timeCanvas.offsetHeight || timeCanvas.getBoundingClientRect().height;
   timeCtx.fillStyle = "#fff";
-  timeCtx.font = 'bold 1.125em Roboto, "Trebuchet MS"';
+  timeCtx.font = '1em Roboto Mono, "Trebuchet MS"';
   timeCtx.textAlign = "center";
   timeCtx.textBaseline = "middle";
 
@@ -1226,9 +1226,12 @@ function statisticsStack() {
   if(gametype === 0 || gametype === 5) {
     $setText(statsLines, lineLimit - lines);
     $setText(statsLevel, "");
-  }else if(gametype === 1 || gametype === 6 || gametype === 7){
+  }else if(gametype === 1 || gametype === 7){
     $setText(statsLines, lines);
     $setText(statsLevel, "Lv. " + level);
+  }else if (gametype === 6){
+    $setText(statsLines, lines);
+    $setText(statsLevel, "Lv. M" + level);
   }else if (gametype === 3){
     if (gameparams["digOffset"] || gameparams["digOffset"] !== 0){
       $setText(statsLevel, gameparams["digOffset"] + "+");

@@ -13,17 +13,17 @@ function Sound() {
         for(var i=0;i<wavenames.length;i++){
           var iname = wavenames[i];
           var wave = document.createElement("AUDIO");
-          console.log(soundtypes[i])
-          if (soundtypes[i] == "game") {
-            wave.src="se/game/"+gametypes[mySettings.Soundbank]+"/"+iname+".wav";
+          switch (soundtypes[i]) {
+            case "game":
+              wave.src="se/game/"+gametypes[mySettings.Soundbank]+"/"+iname+".wav";
+              break;
+            case "ui":
+              wave.src="se/ui/"+gametypes[mySettings.Soundbank]+"/"+iname+".wav";
+              break;
+            case "piece":
+              wave.src="se/piece/"+piecetypes[mySettings.NextType]+"/"+iname+".wav";
+              break;
           }
-          if (soundtypes[i] == "ui") {
-            wave.src="se/ui/"+gametypes[mySettings.Soundbank]+"/"+iname+".wav";
-          }
-          if (soundtypes[i] == "piece") {
-            wave.src="se/piece/"+piecetypes[mySettings.NextType]+"/"+iname+".wav";
-          }
-          
           wave.load();
           waves[iname] = wave;
         }

@@ -267,7 +267,7 @@ Stack.prototype.draw = function() {
     lineCanvas.height = stackCanvas.height;
     
     var lineCtx = lineCanvas.getContext('2d');
-    lineCtx.fillStyle = 'rgba(255,255,255,.7)';
+    lineCtx.fillStyle = 'rgba(255,255,255,.5)';
     lineCtx.beginPath();
     for (var x = 0, len = this.width; x < len; x++) {
       for (var y = 0, wid = this.height; y < wid; y++) {
