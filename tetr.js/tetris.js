@@ -525,6 +525,7 @@ var mySettings = {
   Size: 0,
   Sound: 1,
   Volume: 50,
+  MusicVol: 50,
   Soundbank: 0,
   NextSound: 1,
   NextType: 0,
@@ -548,7 +549,8 @@ var settingName = {
   Next: "Next Window Count",
   Size: "Game Size",
   Sound: "Sound",
-  Volume: "Volume",
+  Volume: "SFX Volume",
+  MusicVol: "Music Volume [NYI]",
   Soundbank: "Soundbank",
   NextSound: "Next Sound Indicator",
   NextType: "Next Soundbank",
@@ -586,10 +588,11 @@ var setting = {
   Size: ['Full', 'Small', 'Medium', 'Large', 'Larger'],
   Sound: ['Off', 'On'],
   Volume: range(0, 101),
-  Soundbank: ['PPT', 'TGM3', 'NullPM', 'Yotipo'],
+  MusicVol: range(0, 101),
+  Soundbank: ['PPT', 'TGM3', 'NullPM', 'Yotipo', 'TOJ'],
   NextSound: ['Off', 'On'],
   NextType: ['TGM3', 'NullPM'],
-  Block: ['Bevelled', 'Flat', 'Glossy', 'Arika', 'World'],
+  Block: ['Bevelled', 'Flat', 'Glossy', 'Arika', 'Aqua', 'Arcade', 'N-Blox'],
   Ghost: ['Normal', 'Colored', 'Off', 'Hidden'],
   Grid: ['Off', 'On'],
   Outline: ['Off', 'On', 'Hidden', 'Only'],
@@ -963,6 +966,11 @@ addEventListener('load', resize, false);
  * Resets all the settings and starts the game.
  */
 function init(gt, params) {
+  if(settings.Sound === 1) {
+    
+    sound.init();
+    }
+  
   if (gt === 'replay') {
     watchingReplay = true;
     if(params !== void 0) {
@@ -1022,9 +1030,8 @@ function init(gt, params) {
     lineLimit = 0;
 
   //html5 mobile device sound
-  if(settings.Sound === 1)
-    
-    sound.init();
+  
+  
 
   //Reset
   column = 0;
@@ -1230,6 +1237,7 @@ function statisticsStack() {
     $setText(statsLines, lines);
     $setText(statsLevel, "Lv. " + level);
   }else if (gametype === 6){
+    
     $setText(statsLines, lines);
     $setText(statsLevel, "Lv. M" + level);
   }else if (gametype === 3){
@@ -1380,7 +1388,7 @@ function makeSprite() {
       spriteCtx.fillStyle = grad;
       spriteCtx.fillRect(x + k, k, cellSize - k * 2, cellSize - k * 2);
 
-    } else if (settings.Block === 3 || settings.Block === 4) {
+    } else if (settings.Block === 3) {
       var k = Math.max(~~(cellSize * 0.125), 1);
 
       spriteCtx.fillStyle = tgm[i][1];
@@ -1405,6 +1413,66 @@ function makeSprite() {
       grad.addColorStop(1, tgm[i][1]);
       spriteCtx.fillStyle = grad;
       spriteCtx.fillRect(x + cellSize - k, 0, k, cellSize - k);
+    } else if (settings.Block === 4) {
+      var k = Math.max(~~(cellSize * 0.1), 1);
+
+      var grad = spriteCtx.createLinearGradient(x, 0, x + cellSize, cellSize);
+      grad.addColorStop(0.5, glossy[i][3]);
+      grad.addColorStop(1, glossy[i][4]);
+      spriteCtx.fillStyle = grad;
+      spriteCtx.fillRect(x, 0, cellSize, cellSize);
+
+      var grad = spriteCtx.createLinearGradient(x, k, x, cellSize);
+      grad.addColorStop(0, shaded[i][0]);
+      grad.addColorStop(0.1, glossy[i][2]);
+      grad.addColorStop(0.4, shaded[i][0]);
+      grad.addColorStop(0.5, shaded[i][2]);
+      spriteCtx.fillStyle = grad;
+      spriteCtx.fillRect(x + k, k, cellSize - k * 2, cellSize - k * 2);
+    } else if (settings.Block === 5) {
+      // Glossy
+      var k = Math.max(~~(cellSize * 0.1), 1);
+
+      var grad = spriteCtx.createLinearGradient(x, 0, x + cellSize, cellSize);
+      grad.addColorStop(0.5, tgm[i][3]);
+      grad.addColorStop(1, tgm[i][1]);
+      spriteCtx.fillStyle = grad;
+      spriteCtx.fillRect(x, 0, cellSize, cellSize);
+
+      var grad = spriteCtx.createLinearGradient(x, 0, x + cellSize, cellSize);
+      grad.addColorStop(0, glossy[i][2]);
+      grad.addColorStop(0.5, glossy[i][1]);
+      spriteCtx.fillStyle = grad;
+      spriteCtx.fillRect(x, 0, cellSize - k, cellSize - k);
+
+      var grad = spriteCtx.createLinearGradient(x + k, k, x + cellSize - k, cellSize - k);
+      grad.addColorStop(0, tgm[i][2]);
+      grad.addColorStop(0.3, tgm[i][2]);
+      grad.addColorStop(0.4, tgm[i][0]);
+      grad.addColorStop(0.7, tgm[i][0]);
+      grad.addColorStop(0.87, tgm[i][1]);
+      spriteCtx.fillStyle = grad;
+      spriteCtx.fillRect(x + k, k, cellSize - k * 2, cellSize - k * 2);
+      
+      spriteCtx.fillStyle = tgm[i][1];
+      spriteCtx.fillRect(x+1.5*k, 1.5*k, cellSize/8, cellSize/8);
+    } else if (settings.Block === 6) {
+      var k = Math.max(~~(cellSize * 0.1), 1);
+
+      spriteCtx.fillStyle = glossy[i][4];
+      spriteCtx.fillRect(x, 0, cellSize, cellSize);
+      
+      var grad = spriteCtx.createLinearGradient(x + cellSize - k, k, x + k, cellSize - k);
+      grad.addColorStop(0, glossy[i][0]);
+      grad.addColorStop(0.5, glossy[i][0]);
+      grad.addColorStop(0.5, shaded[i][0]);
+      grad.addColorStop(1, shaded[i][0]);
+      spriteCtx.fillStyle = grad;
+      spriteCtx.fillRect(x + k, k, cellSize - k * 2, cellSize - k * 2);
+      
+      spriteCtx.fillStyle = shaded[i][1];
+      spriteCtx.fillRect(x + cellSize/5.5, 0 + cellSize/5.5, cellSize/1.64, cellSize/1.64);
+
     }
   }
 }
@@ -1689,16 +1757,23 @@ function gameLoop() {
           lastKeys = keysDown;
         }
         if (gameState === 2) {
+          
           // Count Down
           if (frame === 0) {
+            killAllbgm = true
             $setText(msg,'READY');
             sound.playse("ready")
           } else if (frame === ~~(fps*5/6)) {
+            killAllbgm = false
             $setText(msg,'GO!');
             sound.playse("go")
           } else if (frame === ~~(fps*10/6)) {
             $setText(msg,'');
             scoreStartTime = Date.now();
+            if (gametype === 6) {
+              
+//              sound.playbgm("mastermode", 0)
+            }
           }
           scoreTime = 0;
         } else {
@@ -1744,7 +1819,7 @@ function gameLoop() {
         } else {
           //clear(activeCtx);
           //piece.dead = true;
-          trysubmitscore();
+//          trysubmitscore(); disabled score submissions because they don't work
           gameState = 3;
         }
       }

@@ -160,7 +160,7 @@ a.btn {
   width: 75%;
   height: 1.6rem;
   box-shadow: 0 0 0 .1rem #999, 0 0 .3rem .2rem rgba(0, 0, 0, .5);
-  border-radius: 1px;
+/*  border-radius: 1px;*/
   font-size: 1rem;
   font-weight: bold;
   line-height: 1.6rem;
