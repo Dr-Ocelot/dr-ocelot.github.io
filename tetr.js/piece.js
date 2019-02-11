@@ -511,18 +511,16 @@ Piece.prototype.update = function () {
       classicSoftDrop = 0;
     }
     if (landed) {
-      if (flags.moveDown & keysDown) {
-        
-        this.lockDelay += 75;
-      } else {
-        
+        if (flags.moveDown & keysDown) {
+        classicGravTest += gravityArr[settings['Soft Drop']]
+      }
         classicGravTest += classicStoredY;
         classicGravTest += this.gravity
+      console.log(classicGravTest)
         if (classicGravTest >= 1) {
           this.lockDelay = 99;
           classicGravTest = 0;
         }
-      }
 
     } else {
       this.y += this.gravity
