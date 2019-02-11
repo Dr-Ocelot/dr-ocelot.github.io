@@ -1134,6 +1134,7 @@ function init(gt, params) {
     settings.Block = 8;
     settings.Outline = 0;
     settings.Grid = 0;
+    settings.Gravity = 0;
   }
   menu();
 
