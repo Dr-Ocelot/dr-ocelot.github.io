@@ -1,5 +1,6 @@
 var soundCancel = 0
 function Hold() {
+  
   this.piece=0;
 }
 Hold.prototype.draw = function() {

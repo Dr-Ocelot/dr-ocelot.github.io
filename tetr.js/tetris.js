@@ -28,6 +28,9 @@ function $setText(elm,s){
   }
 }
 
+
+
+
 /**
  * Playfield.
  */
@@ -543,14 +546,14 @@ var settingName = {
   DAS: "DAS",
   ARR: "ARR",
   Gravity: "Gravity",
-  'Soft Drop': "Soft Drop",
+  'Soft Drop': "Soft Drop Speed",
   'Lock Delay': "Lock Delay",
   RotSys: "Rotation System",
   Next: "Next Window Count",
   Size: "Game Size",
   Sound: "Sound",
   Volume: "SFX Volume",
-  MusicVol: "Music Volume [NYI]",
+  MusicVol: "Music Volume",
   Soundbank: "Soundbank",
   NextSound: "Next Sound Indicator",
   NextType: "Next Soundbank",
@@ -559,7 +562,7 @@ var settingName = {
   Grid: "Grid",
   Outline: "Outline",
   DASCut: "DAS Cut",
-  NextSide: "Next Side"
+  NextSide: "Next Queue Side"
 };
 var setting = {
   DAS: range(0,31),
@@ -589,10 +592,10 @@ var setting = {
   Sound: ['Off', 'On'],
   Volume: range(0, 101),
   MusicVol: range(0, 101),
-  Soundbank: ['PPT', 'TGM3', 'NullPM', 'Yotipo', 'TOJ'],
+  Soundbank: ['PPT', 'TGM3', 'NullPM', 'Yotipo', 'TOJ', 'Retro'],
   NextSound: ['Off', 'On'],
   NextType: ['TGM3', 'NullPM'],
-  Block: ['Bevelled', 'Flat', 'Glossy', 'Arika', 'Aqua', 'Arcade', 'N-Blox'],
+  Block: ['Bevelled', 'Flat', 'Glossy', 'Arika', 'Aqua', 'Arcade', 'N-Blox', 'Bone', 'Retro'],
   Ghost: ['Normal', 'Colored', 'Off', 'Hidden'],
   Grid: ['Off', 'On'],
   Outline: ['Off', 'On', 'Hidden', 'Only'],
@@ -958,6 +961,15 @@ function resize() {
 addEventListener('resize', resize, false);
 addEventListener('load', resize, false);
 
+var scoreNes = 0;
+
+function scoreNesRefresh() {
+  if (scoreNes > 999999) {
+    scoreNes = 999999
+  }
+  document.getElementById("nesscore").innerHTML = scoreNes.toString()
+}
+
 /**
  * ========================== Model ===========================================
  */
@@ -965,7 +977,11 @@ addEventListener('load', resize, false);
 /**
  * Resets all the settings and starts the game.
  */
+
 function init(gt, params) {
+  scoreNes = 0;
+  scoreNesRefresh();
+  makeSprite();
   if(settings.Sound === 1) {
     
     sound.init();
@@ -1054,7 +1070,12 @@ function init(gt, params) {
 
   b2b = 0;
   combo = 0;
-  level = 0;
+  if (gametype == 8 && gameparams.proMode == true) {
+    level = 18;
+  } else {
+    level = 0;
+  }
+  
   allclear = 0;
   statsFinesse = 0;
   lines = 0;
@@ -1102,7 +1123,18 @@ function init(gt, params) {
     lastPiecesSet = 0;
     digZenBuffer = 0;
   }
-
+  if (gametype === 8) {
+    settings.Next = 1;
+    settings.RotSys = 8;
+    settings["Lock Delay"] = 80;
+    settings.DAS = 16;
+    settings.ARR = 6;
+    settings["Soft Drop"] = 5;
+    settings.Ghost = 2;
+    settings.Block = 8;
+    settings.Outline = 0;
+    settings.Grid = 0;
+  }
   menu();
 
   // Only start a loop if one is not running already.
@@ -1118,6 +1150,8 @@ function init(gt, params) {
   pauseTime = 0;
   scoreTime = 0;
   paused = false;
+  statisticsStack();
+  preview.draw;
   gameState = 2;
 
   resize();
@@ -1229,15 +1263,26 @@ function statistics() {
 // /* farter */
 function statisticsStack() {
   $setText(statsPiece, piecesSet);
-
+  
+  if(gametype === 8) {
+    document.getElementById("score").style.display = "none";
+    document.getElementById("nesscore").style.display = "block";
+  } else {
+    document.getElementById("score").style.display = "block";
+    document.getElementById("nesscore").style.display = "none";
+  }
+  
   if(gametype === 0 || gametype === 5) {
     $setText(statsLines, lineLimit - lines);
     $setText(statsLevel, "");
   }else if(gametype === 1 || gametype === 7){
     $setText(statsLines, lines);
     $setText(statsLevel, "Lv. " + level);
+  }else if(gametype === 8){
+    $setText(statsLines, lines);
+    $setText(statsLevel, "Lv. " + level);
+   
   }else if (gametype === 6){
-    
     $setText(statsLines, lines);
     $setText(statsLevel, "Lv. M" + level);
   }else if (gametype === 3){
@@ -1254,7 +1299,86 @@ function statisticsStack() {
     $setText(statsLines, lines);
     $setText(statsLevel, "");
   }
-
+  if (gametype !== 8) {
+    $setText(holdtext, "HOLD");
+  } else {
+    $setText(holdtext, "");
+  }
+   if (gameparams.proMode == true) {
+      $setText(promode, "PRO");
+    } else {
+      $setText(promode, "");
+    }
+  
+  
+  if (gametype === 8) {
+    makeSprite();
+    switch (parseInt((level + '').charAt(level.toString().length - 1))) {
+      case 0:
+        nes[9] = ['#0058f8', '#ffffff'];
+        nes[2] = ['#0058f8', '#ffffff00'];
+        nes[7] = ['#3ebeff', '#ffffff00'];
+        break;
+      case 1:
+        nes[9] = ['#00a800', '#ffffff'];
+        nes[2] = ['#00a800', '#ffffff00'];
+        nes[7] = ['#80d010', '#ffffff00'];
+        break;
+      case 2:
+        nes[9] = ['#db00cd', '#ffffff'];
+        nes[2] = ['#db00cd', '#ffffff00'];
+        nes[7] = ['#f878f8', '#ffffff00'];
+        break;
+      case 3:
+        nes[9] = ['#0058f8', '#ffffff'];
+        nes[2] = ['#0058f8', '#ffffff00'];
+        nes[7] = ['#5bdb57', '#ffffff00'];
+        break;
+      case 4:
+        nes[9] = ['#e7005b', '#ffffff'];
+        nes[2] = ['#e7005b', '#ffffff00'];
+        nes[7] = ['#58f898', '#ffffff00'];
+        break;
+      case 5:
+        nes[9] = ['#58f898', '#ffffff'];
+        nes[2] = ['#58f898', '#ffffff00'];
+        nes[7] = ['#6b88ff', '#ffffff00'];
+        break;
+      case 6:
+        nes[9] = ['#f83800', '#ffffff'];
+        nes[2] = ['#f83800', '#ffffff00'];
+        nes[7] = ['#7f7f7f', '#ffffff00'];
+        break;
+      case 7:
+        nes[9] = ['#6b47ff', '#ffffff'];
+        nes[2] = ['#6b47ff', '#ffffff00'];
+        nes[7] = ['#ab0023', '#ffffff00'];
+        break;
+      case 8:
+        nes[9] = ['#0058f8', '#ffffff'];
+        nes[2] = ['#0058f8', '#ffffff00'];
+        nes[7] = ['#f83800', '#ffffff00'];
+        break;
+      case 9:
+        nes[9] = ['#f83800', '#ffffff'];
+        nes[2] = ['#f83800', '#ffffff00'];
+        nes[7] = ['#ffa347', '#ffffff00'];
+        break;
+    }
+  } else {
+    nes = [
+    ['#c1c1c1', '#ffffff00'],
+    ['#3ebeff', '#ffffff'],
+    ['#0058f8', '#ffffff00'],
+    ['#f83800', '#ffffff00'],
+    ['#ffa347', '#ffffff'],
+    ['#80d010', '#ffffff00'],
+    ['#db00cd', '#ffffff'],
+    ['#ab0023', '#ffffff00'],
+    ['#898989', '#ffffff00'],
+    ['#0058f8', '#ffffff'],
+  ];
+  }
   var light=['#ffffff','#EFB08C','#EDDD82','#8489C7','#FFDB94','#EFAFC5','#98DF6E','#6FC5C5','#9A7FD1','#78D4A3'];
 
   statsScore.style.color=(b2b===0?'':light[b2b%10]);
@@ -1295,6 +1419,18 @@ function drawCell(x, y, color, ctx, darkness) {
 /**
  * Pre-renders all mino types in all colors.
  */
+var nes = [
+    ['#c1c1c1', '#ffffff00'],
+    ['#3ebeff', '#ffffff00'],
+    ['#0058f8', '#ffffff00'],
+    ['#e67e23', '#ffffff00'],
+    ['#efc30f', '#ffffff00'],
+    ['#9ccd38', '#ffffff00'],
+    ['#9c5ab8', '#ffffff00'],
+    ['#f83800', '#ffffff00'],
+    ['#898989', '#ffffff00'],
+    ['#0058f8', '#ffffff'],
+  ];
 function makeSprite() {
   var shaded = [
     // 0         +10        -10        -20
@@ -1334,6 +1470,7 @@ function makeSprite() {
     ['#7b7b7b', '#303030', '#6b6b6b', '#363636'],
     ['#ababab', '#5a5a5a', '#9b9b9b', '#626262'],
   ];
+  
 
   spriteCanvas.width = cellSize * 10;
   spriteCanvas.height = cellSize;
@@ -1389,6 +1526,7 @@ function makeSprite() {
       spriteCtx.fillRect(x + k, k, cellSize - k * 2, cellSize - k * 2);
 
     } else if (settings.Block === 3) {
+      // Arika
       var k = Math.max(~~(cellSize * 0.125), 1);
 
       spriteCtx.fillStyle = tgm[i][1];
@@ -1414,6 +1552,7 @@ function makeSprite() {
       spriteCtx.fillStyle = grad;
       spriteCtx.fillRect(x + cellSize - k, 0, k, cellSize - k);
     } else if (settings.Block === 4) {
+      // Aqua
       var k = Math.max(~~(cellSize * 0.1), 1);
 
       var grad = spriteCtx.createLinearGradient(x, 0, x + cellSize, cellSize);
@@ -1430,7 +1569,7 @@ function makeSprite() {
       spriteCtx.fillStyle = grad;
       spriteCtx.fillRect(x + k, k, cellSize - k * 2, cellSize - k * 2);
     } else if (settings.Block === 5) {
-      // Glossy
+      // Arcade
       var k = Math.max(~~(cellSize * 0.1), 1);
 
       var grad = spriteCtx.createLinearGradient(x, 0, x + cellSize, cellSize);
@@ -1457,6 +1596,7 @@ function makeSprite() {
       spriteCtx.fillStyle = tgm[i][1];
       spriteCtx.fillRect(x+1.5*k, 1.5*k, cellSize/8, cellSize/8);
     } else if (settings.Block === 6) {
+      // N-Blox
       var k = Math.max(~~(cellSize * 0.1), 1);
 
       spriteCtx.fillStyle = glossy[i][4];
@@ -1473,6 +1613,42 @@ function makeSprite() {
       spriteCtx.fillStyle = shaded[i][1];
       spriteCtx.fillRect(x + cellSize/5.5, 0 + cellSize/5.5, cellSize/1.64, cellSize/1.64);
 
+    } else if (settings.Block === 7) {
+      // Bone
+      var k = Math.max(~~(cellSize * 0.1), 1);
+
+      spriteCtx.fillStyle = "#000";
+      spriteCtx.fillRect(x, 0, cellSize, cellSize);
+      
+//      spriteCtx.fillStyle = shaded[i][1];
+      spriteCtx.fillStyle = "#fff";
+      spriteCtx.fillRect(x + cellSize/7.5, 0 + cellSize/7.5, cellSize/1.4, cellSize/1.4)
+      
+      spriteCtx.fillStyle = "#000";
+      spriteCtx.fillRect(x + cellSize/3.5, 0 + cellSize/3.5, cellSize/2.44, cellSize/2.44);
+      
+      spriteCtx.fillStyle = "#000";
+      spriteCtx.fillRect(x + cellSize/2.7, 0 + cellSize/8, cellSize/4.14, cellSize/1.2);
+
+    } else if (settings.Block === 8) {
+      // Retro
+      spriteCtx.fillStyle = "#000";
+      spriteCtx.fillRect(x, 0, cellSize, cellSize);
+      
+      spriteCtx.fillStyle = nes[i][0];
+      spriteCtx.fillRect(x + cellSize/8, 0 + cellSize/8, cellSize/1.125, cellSize);
+      
+      spriteCtx.fillStyle = "#fff";
+      spriteCtx.fillRect(x + cellSize/8, 0 + cellSize/8, cellSize/8, cellSize/8);
+      
+      spriteCtx.fillStyle = "#fff";
+      spriteCtx.fillRect(x + cellSize/4, 0 + cellSize/4, cellSize/8, cellSize/4);
+      
+      spriteCtx.fillStyle = "#fff";
+      spriteCtx.fillRect(x + cellSize/4, 0 + cellSize/4, cellSize/4, cellSize/8);
+      
+      spriteCtx.fillStyle = nes[i][1];
+      spriteCtx.fillRect(x + cellSize/4, 0 + cellSize/4, cellSize/1.6, cellSize/1.6);
     }
   }
 }
@@ -1602,8 +1778,11 @@ function update() {
       piece.rotate(1);
       piece.finesse++;
     } else if (flags.rot180 & keysDown && !(lastKeys & flags.rot180)) {
-      piece.rotate(2);
-      piece.finesse++;
+      if (gametype !== 8) {
+        piece.rotate(2);
+        piece.finesse++;
+      }
+      
     }
 
     piece.checkShift();
@@ -1760,6 +1939,10 @@ function gameLoop() {
           
           // Count Down
           if (frame === 0) {
+            statisticsStack();
+            makeSprite();
+            
+            playedLevelingbgm = [false, false, false, false, false]
             killAllbgm = true
             $setText(msg,'READY');
             sound.playse("ready")
@@ -1767,12 +1950,24 @@ function gameLoop() {
             killAllbgm = false
             $setText(msg,'GO!');
             sound.playse("go")
+            preview.draw;
           } else if (frame === ~~(fps*10/6)) {
             $setText(msg,'');
             scoreStartTime = Date.now();
+            
             if (gametype === 6) {
               
-//              sound.playbgm("mastermode", 0)
+              sound.playbgm("mastermode", 0)
+            }
+            else if (gametype === 1) {
+              
+              sound.playbgm("normal1", 0)
+            } else if (gametype === 8) {
+              if (gameparams.proMode == false) {
+                sound.playbgm("retro", 0)
+              } else {
+                sound.playbgm("retropro", 0)
+              }
             }
           }
           scoreTime = 0;
@@ -1787,7 +1982,7 @@ function gameLoop() {
         ) {
           gameState = 0;
           // console.time("123");
-          if (piece.ihs) {
+          if (piece.ihs && gametype !== 8) {
             soundCancel = 1
             piece.index = preview.next();
             sound.playse("initialhold");
@@ -1873,7 +2068,7 @@ function checkWin(){
             break;
           }
         }
-        msg.innerHTML = rank.u + "<br /><small>" + rank.b +"</small>";
+        msg.innerHTML = "<small>" + rank.b +"</small>";
       }
       piece.dead = true;
       menu(3);
@@ -2000,4 +2195,8 @@ function curreplaydata() {
   replay.keys = objKeys;
   //strreplay = strreplay + Compress(strreplay);
   return strreplay;
+}
+
+function retroSettings() {
+
 }

@@ -30,7 +30,12 @@ Piece.prototype.new = function(index) {
 
   this.pos = RotSys[settings.RotSys].initinfo[index][2];
   this.x = ~~((stack.width - 4) / 2) + RotSys[settings.RotSys].initinfo[index][0];
-  this.y = stack.hiddenHeight - 2 + RotSys[settings.RotSys].initinfo[index][1];
+  if (gametype !== 8) {
+    this.y = stack.hiddenHeight - 2 + RotSys[settings.RotSys].initinfo[index][1];
+  } else {
+    this.y = stack.hiddenHeight - 1 + RotSys[settings.RotSys].initinfo[index][1];
+  }
+  
   this.index = index;
   this.tetro = [];
   this.held = false;
@@ -91,7 +96,21 @@ Piece.prototype.new = function(index) {
        this.gravity = 20;
        this.lockDelayLimit = ~~(30 * Math.pow(0.93, (Math.pow(level-20, 0.8)))); // magic!
     }
-  } else {
+  } else if (gametype === 8) { //Classic
+    if ( level <= 29 ) {
+       this.gravity = [
+        1/48, 1/43, 1/38, 1/33, 1/28, 1/23, 1/18, 1/13,  1/8,  1/6,
+         1/5,  1/5,  1/5,  1/4,  1/4,  1/4, 1/3,  1/3,   1/3,  1/2,
+             1/2, 1/2, 1/2, 1/2, 1/2, 1/2, 1/2, 1/2, 1/2, 1
+        ]
+        [level];
+    } else {
+      this.gravity = 1;
+    }
+     
+             
+  } 
+    else {
     this.gravity = gravityUnit;
   }
   if (gametype === 0){
@@ -114,14 +133,13 @@ Piece.prototype.new = function(index) {
   if(this.gravity >= 20) {
     this.checkFall();
   }
+  landed = !this.moveValid(0, 1, this.tetro);
   if (flags.moveDown & keysDown) {
     var grav = gravityArr[settings['Soft Drop'] + 1];
     if (grav >= 20) // 20G softdrop = 20G gravity
       this.y += this.getDrop(grav);
     //piece.finesse++;
   }
-  landed = !this.moveValid(0, 1, this.tetro);
-  
   // die-in-one-frame!
   if(landed && (this.lockDelay >= this.lockDelayLimit)) {
     this.checkLock();
@@ -289,6 +307,7 @@ Piece.prototype.shift = function(direction) {
           if (grav >= 20) // 20G softdrop vs. 20G das
             this.y += this.getDrop(grav);
           //piece.finesse++;
+          
         }
       } else {
         break;
@@ -316,44 +335,61 @@ Piece.prototype.multiShift = function(direction, count) {
 Piece.prototype.shiftDown = function() {
   if (this.moveValid(0, 1, this.tetro)) {
     var grav = gravityArr[settings['Soft Drop'] + 1];
-    if (grav > 1)
+    if (grav > 1){
+      
       this.y += this.getDrop(grav);
-    else
+    }else{
       this.y += grav;
+  }
   }
 }
 Piece.prototype.hardDrop = function() {
-  sound.playse("harddrop");
-  usedHardDrop = true
-  var distance = this.getDrop(2147483647);
-  this.y += distance;
-  score = score.add(bigInt(distance + this.lockDelayLimit - this.lockDelay));
-  //statisticsStack();
-  this.lockDelay = this.lockDelayLimit;
-}
-Piece.prototype.getDrop = function(distance) {
-  
-	if (!this.moveValid(0, 0, this.tetro))
-		return 0;
-  for (var i = 1; i <= distance; i++) {
-    if (!this.moveValid(0, i, this.tetro))
-      return i - 1;
+  if (gametype !== 8) {
+    sound.playse("harddrop");
+    usedHardDrop = true
+    var distance = this.getDrop(2147483647);
+    this.y += distance;
+    score = score.add(bigInt(distance + this.lockDelayLimit - this.lockDelay));
+    //statisticsStack();
+    this.lockDelay = this.lockDelayLimit;
   }
-  return i - 1;
 }
-Piece.prototype.hold = function() {
-  var temp = hold.piece;
-  if (!this.held) {
-    if (hold.piece !== void 0) {
-      hold.piece = this.index;
-      this.new(temp);
-    } else {
-      hold.piece = this.index;
-      this.new(preview.next());
+Piece.prototype.getDrop = function (distance) {
+  if (gametype !== 8) {
+    if (!this.moveValid(0, 0, this.tetro))
+      return 0;
+    for (var i = 1; i <= distance; i++) {
+      if ((!this.moveValid(0, i, this.tetro)))
+        return i - 1;
     }
-    this.held = true;
-    hold.draw();
+    return i - 1;
+  } else {
+    if (!this.moveValid(0, 0, this.tetro))
+      return 0;
+    for (var i = 1; i <= distance; i++) {
+      if ((!this.moveValid(0, i, this.tetro)))
+        return i - 1;
+    }
+    return i - 1;
   }
+
+}
+Piece.prototype.hold = function () {
+  if (gametype !== 8) {
+    var temp = hold.piece;
+    if (!this.held) {
+      if (hold.piece !== void 0) {
+        hold.piece = this.index;
+        this.new(temp);
+      } else {
+        hold.piece = this.index;
+        this.new(preview.next());
+      }
+      this.held = true;
+      hold.draw();
+    }
+  }
+
 }
 /**
  * Checks if position and orientation passed is valid.
@@ -380,8 +416,9 @@ Piece.prototype.moveValid = function(cx, cy, tetro) {
 
 Piece.prototype.checkFall = function() {
   var grav = this.gravity;
-  if (grav > 1)
+  if (grav > 1) {
     this.y += this.getDrop(grav);
+  }
   else {
     this.y += grav;
   }
@@ -397,6 +434,12 @@ Piece.prototype.checkLock = function() {
       this.dead = true;
       stack.addPiece(this.tetro);
       if (usedHardDrop === false) {
+        if (gametype === 8) {
+          scoreNes += Math.floor(classicSoftDrop);
+          scoreNesRefresh();
+          classicSoftDrop = 0;
+          lastYFrame = 0;
+        }
         sound.playse("lock");
       }
       usedHardDrop = false
@@ -420,7 +463,22 @@ Piece.prototype.checkLock = function() {
               this.lockDelayLimit = 11;
               this.areLimit = 6;
             }
-          } else {
+          } else if (gametype === 8) {
+            if (piece.y >= 21) {
+              this.areLimit = 10
+            } else if (piece.y >= 17) {
+              this.areLimit = 12
+            } else if (piece.y >= 13) {
+              this.areLimit = 14
+            } else if (piece.y >= 9) {
+              this.areLimit = 16
+            } else {
+              this.areLimit = 18
+            }
+            
+          }
+          
+          else {
             this.areLimit = 0;
           }
           if (this.areLimit === 0) { // IRS IHS not possible
@@ -436,12 +494,47 @@ Piece.prototype.checkLock = function() {
     }
   }
 }
+var lastYFrame = 0;
+var classicSoftDrop = 0;
+var classicGravTest = 0;
+var classicStoredY = 0;
+Piece.prototype.update = function () {
+  landed = !this.moveValid(0, 1, this.tetro);
+  if (gametype === 8) {
+    if (flags.moveDown & keysDown) {
+      
+      if (lastYFrame !== 0) {
+        classicSoftDrop += (piece.y - lastYFrame);
+      }
+      lastYFrame = piece.y
+    } else {
+      classicSoftDrop = 0;
+    }
+    if (landed) {
+      if (flags.moveDown & keysDown) {
+        
+        this.lockDelay += 75;
+      } else {
+        
+        classicGravTest += classicStoredY;
+        classicGravTest += this.gravity
+        if (classicGravTest >= 1) {
+          this.lockDelay = 99;
+          classicGravTest = 0;
+        }
+      }
 
-Piece.prototype.update = function() {
-  if (this.moveValid(0, 1, this.tetro)) {
+    } else {
+      this.y += this.gravity
+      piece.y += classicGravTest;
+      classicStoredY = piece.y % 1;
+      classicGravTest = 0;
+    }
+  }
+  if (this.moveValid(0, 1, this.tetro) && gametype !== 8) {
     this.checkFall();
   }
-  landed = !this.moveValid(0, 1, this.tetro);
+
   if (landed) {
     this.lockDelay++;
   }

@@ -1,3 +1,4 @@
+
 function Stack() {
   //this.grid;
 }
@@ -101,55 +102,91 @@ Stack.prototype.addPiece = function(tetro) {
 
   var scoreAdd = bigInt(level + 1);
   var garbage = 0;
-  if (lineClear !== 0) {
-    //console.log("C"+combo+" B"+b2b)
-    if (isSpin) {
-      scoreAdd = scoreAdd.mul(
-        bigInt([800,1200,1600,2000][lineClear - 1])
+  if (gametype === 8) {
+    if (lineClear !== 0) {
+      console.log(lineClear)
+      switch (lineClear) {
+        case 1:
+          scoreNes += (40 * (level + 1));
+          break;
+        case 2:
+          scoreNes += (100 * (level + 1));
+          break;
+        case 3:
+          scoreNes += (300 * (level + 1));
+          break;
+        case 4:
+          scoreNes += (1200 * (level + 1));
+          break;
+      
+      }
+        scoreNesRefresh();
+        sound.playse("erase", lineClear);
+    }
+  }else {
+    if (lineClear !== 0) {
+      //console.log("C"+combo+" B"+b2b)
+      if (isSpin) {
+        scoreAdd = scoreAdd.mul(
+          bigInt([800, 1200, 1600, 2000][lineClear - 1])
           .mul(bigInt(2).pow(b2b + combo))
-      );
-      garbage = [[2,4,6,8],[3,6,9,12]][b2b != 0 ? 1 : 0][lineClear - 1];
-      b2b += 1;
-      sound.playse("tspin",lineClear);
-    } else if (lineClear === 4) {
-      scoreAdd = scoreAdd.mul(
-        bigInt(800)
+        );
+        garbage = [[2, 4, 6, 8], [3, 6, 9, 12]][b2b != 0 ? 1 : 0][lineClear - 1];
+        b2b += 1;
+        sound.playse("tspin", lineClear);
+      } else if (lineClear === 4) {
+        scoreAdd = scoreAdd.mul(
+          bigInt(800)
           .mul(bigInt(2).pow(b2b + combo))
-      );
-      garbage = [4,5][b2b != 0 ? 1 : 0];
-      b2b += 1;
-      sound.playse("erase",lineClear);
-    } else {
-      scoreAdd = scoreAdd.mul(
-        bigInt([100,300,500,800][lineClear - 1])
+        );
+        garbage = [4, 5][b2b != 0 ? 1 : 0];
+        b2b += 1;
+        sound.playse("erase", lineClear);
+      } else {
+        scoreAdd = scoreAdd.mul(
+          bigInt([100, 300, 500, 800][lineClear - 1])
           .mul(bigInt(2).pow(combo))
-      );
-      b2b = 0;
-      garbage = [0,1,2,4][lineClear - 1];
-      sound.playse("erase",lineClear);
-    }
-    garbage += ~~(combo / 2); //[0,0,1,1,2,2,3,3,4,4,5,5,6,6,...]
-    combo += 1;
-  } else {
-    if (isSpin) {
-      scoreAdd = scoreAdd.mul(
-        bigInt(2).pow(bigInt(b2b))
-          .mul(bigInt(400))
-      );
-      sound.playse("tspin",lineClear);
+        );
+        b2b = 0;
+        garbage = [0, 1, 2, 4][lineClear - 1];
+        sound.playse("erase", lineClear);
+      }
+      garbage += ~~(combo / 2); //[0,0,1,1,2,2,3,3,4,4,5,5,6,6,...]
+      combo += 1;
     } else {
-      scoreAdd = bigInt(0);
+      if (isSpin) {
+        scoreAdd = scoreAdd.mul(
+          bigInt(2).pow(bigInt(b2b))
+          .mul(bigInt(400))
+        );
+        sound.playse("tspin", lineClear);
+      } else {
+        scoreAdd = bigInt(0);
+      }
+      combo = 0;
     }
-    combo = 0;
   }
   lines += lineClear;
+  var levelCheck = level
   if (gametype === 1 || gametype === 6) {
     level = ~~(lines / 10);
   } else if (gametype === 7) {
     level = ~~(lines / 30);
+  } else if (gametype === 8) {
+    if (gameparams["proMode"] == false) {
+      level = ~~(lines / 10);
+      makeSprite();
+      stack.draw();
+    } else if (gameparams["proMode"] == true) {
+      level = ~~(Math.max(18,(lines / 10) + 6));
+    }
+  }
+  if (levelCheck !== level) {
+    sound.playse("levelup")
   }
   score = score.add(scoreAdd.mul(bigInt(16).pow(allclear)));
-  
+  makeSprite();
+      stack.draw();
   var pc = true;
   for (var x = 0; x < this.width; x++)
     for (var y = 0; y < this.height; y++)

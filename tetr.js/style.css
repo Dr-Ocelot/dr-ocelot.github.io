@@ -523,3 +523,9 @@ i.left.material-icons, i.right.material-icons {
   background: #444;
   z-index: 100;
 }
+#promode {
+  color: red;
+  font-weight: 800;
+  font-size: 0.2em;
+  transform: scaleX(1.3);
+}

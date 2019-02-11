@@ -28,7 +28,7 @@
 
   <!-- Canvases -->
   <div id="d">
-    <h3 style="font-weight: 300;">Hold</h3>
+    <h3 id="holdtext" style="font-weight: 300;">Hold</h3>
 
     <div id="a">
       <canvas id="hold"></canvas>
@@ -40,10 +40,11 @@
     <table id="stats">
       <tr>
         <th style="font-family: 'Roboto Mono'; font-weight: 700" id="score">0</th>
+        <th style="font-family: 'Roboto Mono'; font-weight: 700;display: none;" id="nesscore">0</th>
         <th>Score</th>
       </tr>
       <tr>
-        <td id="levelline" style="font-family: 'Roboto Mono'; font-weight: 300"><div id="level"></div><div id="line" style="font-family: 'Roboto Mono'; font-weight: 300">0</div></td>
+        <td id="levelline" style="font-family: 'Roboto Mono'; font-weight: 300"><div id="level"></div><div id="promode"></div><div id="line" style="font-family: 'Roboto Mono'; font-weight: 300">0</div></td>
         <th>Line</th>
       </tr>
       <tr>
@@ -186,7 +187,7 @@
       <p>Ctrl+C / Ctrl+V</p>
       <textarea id="replaydata" spellcheck="false"></textarea>
       <ul>
-        <li><a class="btn" onclick="tryreplaydata()">Watch</a></li>
+        <li><a class="btn" onclick="tryreplaydata();sound.init()">Watch</a></li>
         <li><a class="btn" onclick="menu(void 0,-1)">Back</a></li>
       </ul>
     </nav>
@@ -197,12 +198,13 @@
       <div style="margin: 0px" class="btn-container">
         
         <a class="btn" onclick="init(4,{digraceType:'checker'})"><i class="material-icons">&#xE540;</i> Dig Race Pro</a>
-        <a class="btn" onclick="init(7)"><i class="material-icons">&#xE034;</i> Lockstep Survival</a>
+        <a class="btn" onclick="init(7)"><i class="material-icons">&#xE034;</i> Zen Survival</a>
         <a class="btn" onclick="init(3,{digOffset:500})"><i class="material-icons">&#xE3A8;</i> Survival Lv 2</a>
         <a class="btn" onclick="init(3,{digOffset:1000})"><i class="material-icons">&#xE3A7;</i> Survival Lv 3</a>
         <a class="btn" onclick="init(3,{digOffset:1500})"><i class="material-icons">&#xE3A6;</i> Survival Lv 4</a>
         <a class="btn" onclick="init(3,{digOffset:2000})"><i class="material-icons">&#xE3E4;</i> Survival Lv 5</a>
-        
+        <a class="btn" onclick="init(8,{proMode:false})"><i class="material-icons"></i> Retro</a>
+        <a class="btn" onclick="init(8,{proMode:true})"><i class="material-icons"></i> Retro Pro</a>
         <a class="btn" onclick="init(0,{pieceSet:1})"><i class="material-icons"></i> Spr<span class="flickering">i</span>nt 40</a>
         <a class="btn" onclick="init(0,{pieceSet:2})"><i class="material-icons"></i> I Sprint 40</a>
         <a class="btn" onclick="init(0,{backFire:1})"><i class="material-icons"></i> Backfire</a>

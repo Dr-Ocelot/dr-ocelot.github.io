@@ -27,26 +27,66 @@ Preview.prototype.next = function() {
 /**
  * Creates a "grab bag" of the 7 tetrominos.
  */
-Preview.prototype.gen = function() {
-  var pieceList = void 0;
-  if(gameparams && gameparams.pieceSet){
-    switch(gameparams.pieceSet){
-      case 1: pieceList=[1,2,3,4,5,6];break;
-      case 2: pieceList=[0,0,0,0,0,0,0];break;
+Preview.prototype.gen = function () {
+  if (gametype === 8) {
+    var pieceList = void 0;
+    if (gameparams && gameparams.pieceSet) {
+      switch (gameparams.pieceSet) {
+        case 1:
+          pieceList = [1, 2, 3, 4, 5, 6];
+          break;
+        case 2:
+          pieceList = [0, 0, 0, 0, 0, 0, 0];
+          break;
+      }
+    } else {
+      pieceList = [0, 1, 2, 3, 4, 5, 6];
     }
-  }else{
-    pieceList= [0, 1, 2, 3, 4, 5, 6];
+    //return pieceList.sort(function() {return 0.5 - rng.next()});
+    /* farter */ // proven random shuffle algorithm
+    var rerollAllowed = true
+    for (var i = 0; i < 7; i++) {
+      
+      if (rerollAllowed == true) {
+        var rand = ~~((8) * rng.next());
+      } else {
+        var rand = ~~((7) * rng.next());
+      }
+      if ((rand === 7 || rand == pieceList[(i - 1)]) && rerollAllowed == true) {
+        i--
+        rerollAllowed = false
+      } else {
+        pieceList[i] = rand;
+        rerollAllowed = true
+      }
+      
+    }
+    return pieceList;
+  } else {
+    var pieceList = void 0;
+    if (gameparams && gameparams.pieceSet) {
+      switch (gameparams.pieceSet) {
+        case 1:
+          pieceList = [1, 2, 3, 4, 5, 6];
+          break;
+        case 2:
+          pieceList = [0, 0, 0, 0, 0, 0, 0];
+          break;
+      }
+    } else {
+      pieceList = [0, 1, 2, 3, 4, 5, 6];
+    }
+    //return pieceList.sort(function() {return 0.5 - rng.next()});
+    /* farter */ // proven random shuffle algorithm
+    for (var i = 0; i < pieceList.length - 1; i++) {
+      var temp = pieceList[i];
+      var rand = ~~((pieceList.length - i) * rng.next()) + i;
+      pieceList[i] = pieceList[rand];
+      pieceList[rand] = temp;
+    }
+    return pieceList;
   }
-  //return pieceList.sort(function() {return 0.5 - rng.next()});
-  /* farter */ // proven random shuffle algorithm
-  for (var i=0;i<pieceList.length-1;i++)
-  {
-    var temp=pieceList[i];
-    var rand=~~((pieceList.length-i)*rng.next())+i;
-    pieceList[i]=pieceList[rand];
-    pieceList[rand]=temp;
-  }
-  return pieceList;
+
 }
 /**
  * Draws the piece preview.
