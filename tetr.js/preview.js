@@ -28,7 +28,7 @@ Preview.prototype.next = function() {
  * Creates a "grab bag" of the 7 tetrominos.
  */
 Preview.prototype.gen = function () {
-  if (gametype === 8) {
+  if (gametype === 8) { //if retro mode
     var pieceList = void 0;
     if (gameparams && gameparams.pieceSet) {
       switch (gameparams.pieceSet) {
@@ -39,7 +39,8 @@ Preview.prototype.gen = function () {
           pieceList = [0, 0, 0, 0, 0, 0, 0];
           break;
       }
-    } else {
+    } 
+    else {
       pieceList = [0, 1, 2, 3, 4, 5, 6];
     }
     //return pieceList.sort(function() {return 0.5 - rng.next()});
@@ -62,6 +63,50 @@ Preview.prototype.gen = function () {
       
     }
     return pieceList;
+  } else if (gametype === 9) {
+    let pieces = [0, 1, 2, 3, 4, 5, 6];
+  let order = [];
+  var piecelist = [];
+
+  // Create 35 pool.
+  let pool = pieces.concat(pieces, pieces, pieces, pieces);
+
+  // First piece special conditions
+  const firstPiece = ['0', '1', '2', '5',][Math.floor(Math.random() * 4)];
+  piecelist.push(firstPiece);
+
+  let history = ['4', '6', '4', firstPiece];
+
+  for (j = 0; j < 100; j++) {
+    let roll;
+    let i;
+    let piece;
+
+    // Roll For piece
+    for (roll = 0; roll < 6; ++roll) {
+      i = Math.floor(Math.random() * 35);
+      piece = pool[i];
+      if (history.includes(piece) === false || roll === 5) {
+        break;
+      }
+      if (order.length) pool[i] = order[0];
+    }
+
+    // Update piece order
+    if (order.includes(piece)) {
+      order.splice(order.indexOf(piece), 1);
+    }
+    order.push(piece);
+
+    pool[i] = order[0];
+
+    // Update history
+    history.shift();
+    history[3] = piece;
+
+    piecelist.push(piece);
+  }
+  return piecelist
   } else {
     var pieceList = void 0;
     if (gameparams && gameparams.pieceSet) {
@@ -116,3 +161,4 @@ Preview.prototype.draw = function() {
   this.dirty = false;
 }
 var preview = new Preview();
+

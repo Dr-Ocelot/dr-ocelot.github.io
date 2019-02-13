@@ -7,8 +7,8 @@ function Sound() {
   var piecetypes = "tgm,npm".split(",")
   var gametypes = "ppt,tgm,npm,yotipo,toj,nes".split(",")
   var uitypes = "ppt,tgm,npm,yotipo,tojnes".split(",")
-  var wavenames = "bravo,levelup,endingstart,erase1,erase2,erase3,erase4,gameover,garbage,lock,tspin0,tspin1,tspin2,tspin3,piece0,piece1,piece2,piece3,piece4,piece5,piece6,harddrop,move,rotate,initialrotate,hold,initialhold,ready,go,mastermode,marathon,normal1,normal2,normal3,normal4,normal5,normal6,retro,retropro".split(",");
-  var soundtypes = "game,game,ui,game,game,game,game,ui,game,game,game,game,game,game,piece,piece,piece,piece,piece,piece,piece,game,game,game,game,game,game,ui,ui,bgm,bgm,bgm,bgm,bgm,bgm,bgm,bgm,bgm,bgm".split(",");
+  var wavenames = "drought,droughtintense,bravo,levelup,step,endingstart,erase1,erase2,erase3,erase4,gameover,garbage,lock,tspin0,tspin1,tspin2,tspin3,piece0,piece1,piece2,piece3,piece4,piece5,piece6,harddrop,move,rotate,initialrotate,hold,initialhold,ready,go,mastermode,marathon,normal1,normal2,normal3,normal4,normal5,normal6,retro,retropro".split(",");
+  var soundtypes = "fixed,fixed,game,game,game,ui,game,game,game,game,ui,game,game,game,game,game,game,piece,piece,piece,piece,piece,piece,piece,game,game,game,game,game,game,ui,ui,bgm,bgm,bgm,bgm,bgm,bgm,bgm,bgm,bgm,bgm".split(",");
   var waves = {};
   this.init = function (type) {
     itworks = false;
@@ -30,6 +30,8 @@ function Sound() {
             case "bgm":
               wave.src = "bgm/" + iname + ".ogg";
               break;
+            case "fixed":
+              wave.src = "se/fixed/" + iname + ".wav";
           }
           wave.load();
           waves[iname] = wave;

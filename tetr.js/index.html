@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,500,700|Roboto:300,400,500,700" rel="stylesheet">
   <!--<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-554c83a8661bf358" async="async"></script>-->
+  <script src="gamepad.min.js"></script>
 </head>
 <body>
 <!--<canvas id="bg"></canvas>-->
@@ -23,7 +24,7 @@
 <div class="touchbutton" id="touchRotLeft" style="display:none"><i class="material-icons">&#xE166;</i></div>
 <div class="touchbutton" id="touchRot180" style="display:none"><i class="material-icons">&#xE5D5;</i></div>
 <div class="touchbutton" id="touchLayout" style="display:none"><i class="material-icons">&#xE913;</i></div>
-
+<div class="wrapper" id="rainbow" style="display: none;"></div>
 <div id="content">
 
   <!-- Canvases -->
@@ -76,14 +77,17 @@
       <p style=margin:5px;>forked from: <a class="link" href="https://github.com/farteryhr/tetr.js/tree/gh-pages">&gt;&gt;Dig v0.58 by farter</a><br/>
 
       <div class="btn-container" style="margin: 0px">
-        <a class="btn" onclick="init(1)"><i class="material-icons">&#xE153;</i> Marathon</a>
-        <a class="btn" onclick="init(6)"><i class="material-icons">&#xE01F;</i> Master</a>
-        <a class="btn" onclick="init(0)"><i class="material-icons">&#xE3E7;</i> Sprint 40</a>
-        <a class="btn" onclick="init(5)"><i class="material-icons">&#xE2C3;</i> SprinT 200</a>
+        <b>QUICK ACCESS</b>
+        <a class="btn" onclick="init(1)" style="margin-top: 9px"><i class="material-icons">&#xE153;</i> Marathon</a>
+
+        <a class="btn" style="margin-bottom: 50px" onclick="init(0)"><i class="material-icons">&#xE3E7;</i> Sprint 40</a>
         <!-- <a class="btn" onclick="init(2)">Play Ultra</a> -->
-        <a class="btn" onclick="init(3,{digOffset:0})"><i class="material-icons">&#xE800;</i> Survival</a>
-        <a class="btn" onclick="init(4,{digraceType:'easy'})"><i class="material-icons">&#xE91D;</i> Dig Race</a>
-        <a class="btn highlight" onclick="menu(7,1);this.classList.remove('highlight')"><i class="material-icons">&#xE8E5;</i> Special Modes</a>
+        
+        <a class="btn" onclick="menu(10,1)"><i class="material-icons">&#xE8E5;</i> Main Modes</a>
+        <a class="btn" onclick="menu(7,1)"><i class="material-icons">&#xE8E5;</i> Dig Modes</a>
+        <a class="btn" onclick="menu(9,1)"><i class="material-icons">&#xE8E5;</i> Sprint Modes</a>
+        <a class="btn" onclick="menu(8,1)"><i class="material-icons">&#xE8E5;</i> Retro Modes</a>
+        
         <a class="btn" onclick="menu(2)" id="btnbinds"><i class="material-icons">&#xE021;</i> Controls</a>
         <a class="btn" onclick="menu(1)"><i class="material-icons">&#xE869;</i> Settings</a>
         <a class="btn" onclick="menu(6,1)"><i class="material-icons">&#xE04A;</i> Replay</a>
@@ -196,15 +200,35 @@
       <h1 style="font-weight: 4;font-size: 1.5rem;margin: 0px">Tetr.js Enhanced</h1>
       <p style="margin: 0px">Special Modes</p>
       <div style="margin: 0px" class="btn-container">
-        
+        <a class="btn" onclick="init(4,{digraceType:'easy'})"><i class="material-icons">&#xE91D;</i> Dig Race</a>
         <a class="btn" onclick="init(4,{digraceType:'checker'})"><i class="material-icons">&#xE540;</i> Dig Race Pro</a>
+        <a class="btn" onclick="init(3,{digOffset:0})"><i class="material-icons">&#xE800;</i> Survival</a>
         <a class="btn" onclick="init(7)"><i class="material-icons">&#xE034;</i> Zen Survival</a>
         <a class="btn" onclick="init(3,{digOffset:500})"><i class="material-icons">&#xE3A8;</i> Survival Lv 2</a>
         <a class="btn" onclick="init(3,{digOffset:1000})"><i class="material-icons">&#xE3A7;</i> Survival Lv 3</a>
         <a class="btn" onclick="init(3,{digOffset:1500})"><i class="material-icons">&#xE3A6;</i> Survival Lv 4</a>
         <a class="btn" onclick="init(3,{digOffset:2000})"><i class="material-icons">&#xE3E4;</i> Survival Lv 5</a>
-        <a class="btn" onclick="init(8,{proMode:false})"><i class="material-icons"></i> Retro</a>
-        <a class="btn" onclick="init(8,{proMode:true})"><i class="material-icons"></i> Retro Pro</a>
+        
+        
+        <a class="btn" onclick="menu(void 0,-1)">Back</a>
+      </div>
+    </nav>
+    <nav class="menu">
+      <h1 style="font-weight: 4;font-size: 1.5rem;margin: 0px">Tetr.js Enhanced</h1>
+      <p style="margin: 0px">Retro Modes</p>
+      <div style="margin: 0px" class="btn-container">
+        <a class="btn" onclick="init(8,{proMode:false})"><i class="material-icons"></i> A-Type</a>
+        <a class="btn" onclick="init(8,{proMode:true})"><i class="material-icons"></i> A-Type Pro</a>
+        
+        <a class="btn" onclick="menu(void 0,-1)">Back</a>
+      </div>
+    </nav>
+    <nav class="menu">
+      <h1 style="font-weight: 4;font-size: 1.5rem;margin: 0px">Tetr.js Enhanced</h1>
+      <p style="margin: 0px">Sprint Modes</p>
+      <div style="margin: 0px" class="btn-container">
+        <a class="btn" onclick="init(0)"><i class="material-icons">&#xE3E7;</i> Sprint 40</a>
+        <a class="btn" onclick="init(5)"><i class="material-icons">&#xE2C3;</i> Sprint 200</a>
         <a class="btn" onclick="init(0,{pieceSet:1})"><i class="material-icons"></i> Spr<span class="flickering">i</span>nt 40</a>
         <a class="btn" onclick="init(0,{pieceSet:2})"><i class="material-icons"></i> I Sprint 40</a>
         <a class="btn" onclick="init(0,{backFire:1})"><i class="material-icons"></i> Backfire</a>
@@ -214,15 +238,38 @@
         <a class="btn" onclick="menu(void 0,-1)">Back</a>
       </div>
     </nav>
+    <nav class="menu">
+      <h1 style="font-weight: 4;font-size: 1.5rem;margin: 0px">Tetr.js Enhanced</h1>
+      <p style="margin: 0px">Main Modes</p>
+      <div style="margin: 0px" class="btn-container">
+        <a class="btn" onclick="init(1)"><i class="material-icons">&#xE153;</i> Marathon</a>
+        <a class="btn" onclick="init(6)"><i class="material-icons">&#xE01F;</i> Master</a>
+        <p style="margin-bottom: 0px;">Grade Modes are VERY unfinished and featureless. Feel free to play them, but don't expect much.</p>
+        <a class="btn" onclick="init(9, {classicRule:true})"><i class="material-icons">&#xE153;</i> Grades Classic</a>
+        <a class="btn" onclick="init(9), {classicRule:false}"><i class="material-icons">&#xE153;</i> Grades World</a>
+        
+        <a class="btn" onclick="menu(void 0,-1)">Back</a>
+      </div>
+    </nav>
+
 
   </div>
 
   <div id="c">
     <h3 style="font-weight: 300;">Next</h3>
     <canvas id="preview"></canvas>
+    <div id="lineshower" style="font-size: 2.5em; transform:translate(0, 9em); display: none;">
+      <img src="linevector.svg">
+      <p id="ivalue" style="margin:0px; text-align: center; font-family: 'Roboto Mono'; font-weight: 200;">0</p>
+      
+    </div>
+    
+    
+    
+    </div>
+    
   </div>
 
-</div>
 
 <canvas id="sprite"></canvas>
 <script type="text/javascript" src="bigmin.js"></script>

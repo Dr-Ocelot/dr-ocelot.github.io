@@ -17,11 +17,16 @@ Stack.prototype.new = function(x, y, hy) {
   
   this.dirty = true;
 }
+
+
+var classicLineClear = 0;
+var lineClear = 0;
 /**
  * Adds tetro to the stack, and clears lines if they fill up.
  */
+
 Stack.prototype.addPiece = function(tetro) {
-  var lineClear = 0;
+  lineClear = 0;
   var isSpin = false;
   var once = false;
   
@@ -104,7 +109,6 @@ Stack.prototype.addPiece = function(tetro) {
   var garbage = 0;
   if (gametype === 8) {
     if (lineClear !== 0) {
-      console.log(lineClear)
       switch (lineClear) {
         case 1:
           scoreNes += (40 * (level + 1));
@@ -153,6 +157,21 @@ Stack.prototype.addPiece = function(tetro) {
       }
       garbage += ~~(combo / 2); //[0,0,1,1,2,2,3,3,4,4,5,5,6,6,...]
       combo += 1;
+      if (gametype === 9) {
+        if (lineClear == 1) {
+          leveltgm += 1
+          leveltgmvisible += 1
+        } else if (lineClear == 2) {
+          leveltgm += 2
+          leveltgmvisible += 2
+        } else if (lineClear == 3) {
+          leveltgm += 4
+          leveltgmvisible += 4
+        } else if (lineClear == 4) {
+          leveltgm += 6
+          leveltgmvisible += 6
+        }
+      }
     } else {
       if (isSpin) {
         scoreAdd = scoreAdd.mul(
@@ -225,7 +244,18 @@ Stack.prototype.addPiece = function(tetro) {
     //console.log(scoreAdd.toString());
 
   statsFinesse += piece.finesse - finesse[piece.index][piece.pos][column];
-  piecesSet++; // NOTE Stats
+  piecesSet++;
+  if (gametype === 9) {
+    leveltgm++
+    leveltgmvisible++
+//    if (leveltgmvisible > 70 && scoreTime <= 52000) {
+//      console.log("Cool!")
+//      leveltgm += 100 //work on later
+//    } if (leveltgmvisible <= 100 && scoreTime >= 75000) {
+//          console.log("REGRET")     
+//      }
+  }
+  // NOTE Stats
   // TODO Might not need this (same for in init)
   column = 0;
 

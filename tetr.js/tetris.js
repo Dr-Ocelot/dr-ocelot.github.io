@@ -41,6 +41,7 @@ var column;
  * Get html elements.
  */
 var msg = $$('msg');
+var statsIpieces = $$('ivalue');
 var stats = $$('stats');
 var statsTime = $$('time');
 var statsLines = $$('line');
@@ -806,6 +807,8 @@ var lastX, lastY, lastPos, lastLockDelay, landed;
 var b2b;
 var combo;
 var level;
+var leveltgm;
+var leveltgmvisible;
 var allclear;
 
 // Stats
@@ -979,8 +982,13 @@ function scoreNesRefresh() {
  */
 
 function init(gt, params) {
+  document.getElementById("ivalue").style.color = "#ffffff";
+  leveltgm = 0;
+  leveltgmvisible = 0;
   scoreNes = 0;
   scoreNesRefresh();
+  lineDrought = 0;
+  lineAmount = 0;
   makeSprite();
   if(settings.Sound === 1) {
     
@@ -1135,14 +1143,26 @@ function init(gt, params) {
     settings.Outline = 0;
     settings.Grid = 0;
     settings.Gravity = 0;
+  } else if (gametype === 9) {
+    settings.Next = 3;
+    settings.DAS = 14;
+    settings["Lock Delay"] = 30;
+    if (gameparams.classicRule === true) {
+      settings.RotSys = 2;
+      settings.Block = 3;
+    } else {
+      settings.RotSys = 0;
+      settings.Block = 2;
+    }
+    
   }
   menu();
 
   // Only start a loop if one is not running already.
   // don't keep looping when not played
-  console.log(paused,gameState);
+//  console.log(paused,gameState);
   if (paused || gameState === 3) {
-    console.log("start inloop",inloop);
+//    console.log("start inloop",inloop);
     inloop=true;
     requestAnimFrame(gameLoop);
   }
@@ -1201,7 +1221,7 @@ function unpause() {
   pauseTime += (Date.now() - startPauseTime);
   $setText(msg,'');
   menu();
-  console.log("start inloop", inloop);
+//  console.log("start inloop", inloop);
   inloop = true;
   requestAnimFrame(gameLoop);
 }
@@ -1262,6 +1282,7 @@ function statistics() {
  * Draws the stats about the stack next to the tetrion.
  */
 // /* farter */
+var lineAmount = 0;
 function statisticsStack() {
   $setText(statsPiece, piecesSet);
   
@@ -1282,10 +1303,15 @@ function statisticsStack() {
   }else if(gametype === 8){
     $setText(statsLines, lines);
     $setText(statsLevel, "Lv. " + level);
-   
+    if (lineDrought < 13) {
+      $setText(statsIpieces, lineAmount)
+    }
+    
+    
   }else if (gametype === 6){
     $setText(statsLines, lines);
     $setText(statsLevel, "Lv. M" + level);
+    
   }else if (gametype === 3){
     if (gameparams["digOffset"] || gameparams["digOffset"] !== 0){
       $setText(statsLevel, gameparams["digOffset"] + "+");
@@ -1293,7 +1319,12 @@ function statisticsStack() {
       $setText(statsLevel, "");
     }
     $setText(statsLines, lines);
-  }//else if (gametype === 4){
+    
+  } else if (gametype === 9){
+    $setText(statsLines, lines);
+    $setText(statsLevel, leveltgmvisible);
+  }
+  //else if (gametype === 4){
   //  $setText(statsLines, digLines.length);
   //}
   else{
@@ -1310,7 +1341,18 @@ function statisticsStack() {
     } else {
       $setText(promode, "");
     }
+  if (gametype === 8) {
+    document.getElementById("lineshower").style.display = "block";
+    
+  } else {
+    document.getElementById("lineshower").style.display = "none";
+  }
   
+  if (gametype === 6) {
+    document.getElementById("rainbow").style.display = "block";
+  } else {
+    document.getElementById("rainbow").style.display = "none";
+  }
   
   if (gametype === 8) {
     makeSprite();
@@ -1779,7 +1821,7 @@ function update() {
       piece.rotate(1);
       piece.finesse++;
     } else if (flags.rot180 & keysDown && !(lastKeys & flags.rot180)) {
-      if (gametype !== 8) {
+      if (gametype !== 8 || true) {
         piece.rotate(2);
         piece.finesse++;
       }
@@ -1903,11 +1945,16 @@ function gameLoop() {
         }
         // DAS Preload
         if (keysDown & flags.moveLeft) {
-          piece.shiftDelay = settings.DAS;
+//          if (gametype !== 8) {
+            piece.shiftDelay = settings.DAS;
+//          }
+          
           piece.shiftReleased = false;
           piece.shiftDir = -1;
         } else if (keysDown & flags.moveRight) {
-          piece.shiftDelay = settings.DAS;
+//          if (gametype !== 8) {
+            piece.shiftDelay = settings.DAS;
+//          }
           piece.shiftReleased = false;
           piece.shiftDir = 1;
         } else {
@@ -1919,19 +1966,19 @@ function gameLoop() {
           
           piece.irsDir = -1;
           piece.finesse++;
-          console.log("IRS");
+//          console.log("IRS");
         } else if (flags.rotRight & keysDown && !(lastKeys & flags.rotRight)) {
           piece.irsDir = 1;
           piece.finesse++;
-          console.log("IRS");
+//          console.log("IRS");
         } else if (flags.rot180 & keysDown && !(lastKeys & flags.rot180)) {
           piece.irsDir = 2;
           piece.finesse++;
-          console.log("IRS");
+//          console.log("IRS");
         }
         if (!(lastKeys & flags.holdPiece) && flags.holdPiece & keysDown) {
           piece.ihs = true;
-          console.log("IHS");
+//          console.log("IHS");
         }
         if (lastKeys !== keysDown) {
           lastKeys = keysDown;
@@ -1974,6 +2021,18 @@ function gameLoop() {
           scoreTime = 0;
         } else {
           // are
+          if (lineClear == 4) {
+            if (gametype === 8) {
+              if ((piece.are % 2) == 0) {
+                document.body.style.backgroundColor = "white";
+              } else {
+                document.body.style.backgroundColor = "black";
+              }
+            }
+
+          }
+          
+          
           piece.are++;
           updateScoreTime();
         }
@@ -1981,6 +2040,7 @@ function gameLoop() {
           (gameState === 2 && frame >= fps*10/6) ||
           (gameState === 4 && piece.are >= piece.areLimit)
         ) {
+          document.body.style.backgroundColor = "black";
           gameState = 0;
           // console.time("123");
           if (piece.ihs && gametype !== 8) {
@@ -2048,11 +2108,10 @@ function gameLoop() {
     }
     
   } else {
-    console.log("stop inloop",inloop)
+//    console.log("stop inloop",inloop)
     inloop = false;
   }
 }
-
 // called after piece lock, may be called multple times when die-in-one-frame
 function checkWin(){
   if (gametype === 0) { // 40L

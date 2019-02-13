@@ -20,22 +20,32 @@ function Piece() {
   this.finesse = 0;
   this.dirty = false;
   this.dead = true;
+  this.rotateLimit = 0;
+  this.moveLimit = 0;
+  this.delayCounting = false;
 }
+
+var lineARE = 0;
+var lineDrought = 0;
 /**
  * Removes last active piece, and gets the next active piece from the grab bag.
  */
 Piece.prototype.new = function(index) {
   // TODO if no arguments, get next grabbag piece
   //console.log("new irs"+this.irsDir+", ihs"+this.ihs);
-
+  
   this.pos = RotSys[settings.RotSys].initinfo[index][2];
   this.x = ~~((stack.width - 4) / 2) + RotSys[settings.RotSys].initinfo[index][0];
-  if (gametype !== 8) {
-    this.y = stack.hiddenHeight - 2 + RotSys[settings.RotSys].initinfo[index][1];
-  } else {
+  if (gametype === 8 || gametype === 9) {
     this.y = stack.hiddenHeight - 1 + RotSys[settings.RotSys].initinfo[index][1];
+  } else {
+    
+    this.y = stack.hiddenHeight - 2 + RotSys[settings.RotSys].initinfo[index][1];
+
   }
-  
+  this.rotateLimit = 0;
+  this.moveLimit = 0;
+  this.delayCounting = false;
   this.index = index;
   this.tetro = [];
   this.held = false;
@@ -43,10 +53,27 @@ Piece.prototype.new = function(index) {
   this.finesse = 0;
   this.dirty = true;
   this.dead = false;
+  
   if (settings.NextSound == 1) {
     sound.playse("piece"+preview.grabBag[0])
   }
-  
+  if (index == 0 && gametype === 8) {
+    lineDrought = 0
+    lineAmount++
+    document.getElementById("ivalue").style.color = "#ffffff";
+    $setText(statsIpieces, lineAmount)
+  } else {
+    lineDrought++;
+    if (lineDrought >= 13) {
+      document.getElementById("ivalue").style.color = "#ff0000";
+      if (lineDrought < 25) {
+//        sound.playse("drought")
+      } else {
+//        sound.playse("droughtintense")
+      }
+      $setText(statsIpieces, lineDrought);
+    }
+  }
   // TODO Do this better. Make clone object func maybe.
   //for property in pieces, this.prop = piece.prop
   if (this.irsDir !== 0) {
@@ -109,8 +136,130 @@ Piece.prototype.new = function(index) {
     }
      
              
-  } 
-    else {
+  } else if (gametype === 9) { //tgm
+    var base = 1/65536
+    if (leveltgm >= 0) { //speed ramp
+      this.gravity = (base * 1024)
+    } if (leveltgm >= 30) {
+      this.gravity = (base * 1536)
+    } if (leveltgm >= 35) {
+      this.gravity = (base * 2048)
+    } if (leveltgm >= 40) {
+      this.gravity = (base * 2560)
+    } if (leveltgm >= 50) {
+      this.gravity = (base * 3072)
+    } if (leveltgm >= 60) {
+      this.gravity = (base * 4096)
+    } if (leveltgm >= 70) {
+      this.gravity = (base * 8192)
+    } if (leveltgm >= 80) {
+      this.gravity = (base * 12288)
+    } if (leveltgm >= 90) {
+      this.gravity = (base * 16384)
+    } if (leveltgm >= 100) {
+      this.gravity = (base * 20480)
+    } if (leveltgm >= 120) {
+      this.gravity = (base * 24576)
+    } if (leveltgm >= 140) {
+      this.gravity = (base * 28672)
+    } if (leveltgm >= 160) {
+      this.gravity = (base * 32768)
+    } if (leveltgm >= 170) {
+      this.gravity = (base * 36865)
+    } if (leveltgm >= 200) {
+      this.gravity = (base * 1024)
+    } if (leveltgm >= 220) {
+      this.gravity = (base * 8192)
+    } if (leveltgm >= 230) {
+      this.gravity = (base * 16384)
+    } if (leveltgm >= 233) {
+      this.gravity = (base * 24576)
+    } if (leveltgm >= 236) {
+      this.gravity = (base * 32768)
+    } if (leveltgm >= 239) {
+      this.gravity = (base * 40960)
+    } if (leveltgm >= 243) {
+      this.gravity = (base * 49152)
+    } if (leveltgm >= 247) {
+      this.gravity = (base * 57344)
+    } if (leveltgm >= 251) {
+      this.gravity = 1;
+    } if (leveltgm >= 300) {
+      this.gravity = 2;
+    } if (leveltgm >= 330) {
+      this.gravity = 3;
+    } if (leveltgm >= 360) {
+      this.gravity = 4;
+    } if (leveltgm >= 400) {
+      this.gravity = 5;
+    } if (leveltgm >= 420) {
+      this.gravity = 4;
+    } if (leveltgm >= 450) {
+      this.gravity = 3;
+    } if (leveltgm >= 500) {
+      this.gravity = 20;
+    } 
+    
+    const speedTableTGM = [
+      {level:0, speed:20}
+      ];
+      
+      
+    if (leveltgm < 100) { //ghost visiblity
+      settings.Ghost = 1;
+    } else {
+      settings.Ghost = 2;
+    }
+    
+    if (leveltgm <= 499) {
+      this.areLimit = 25;
+      lineARE = 40;
+      settings.DAS = 14;
+      settings["Lock Delay"] = 30;
+    } else if (leveltgm <= 599) {
+      this.areLimit = 25;
+      lineARE = 25;
+      settings.DAS = 8;
+      settings["Lock Delay"] = 30;
+    } else if (leveltgm <= 699) {
+      this.areLimit = 25;
+      lineARE = 7;
+      settings.DAS = 8;
+      settings["Lock Delay"] = 30;
+    } else if (leveltgm <= 799) {
+      this.areLimit = 16;
+      lineARE = 7;
+      settings.DAS = 8;
+      settings["Lock Delay"] = 30;
+    } else if (leveltgm <= 899) {
+      this.areLimit = 12;
+      lineARE = 0;
+      settings.DAS = 8;
+      settings["Lock Delay"] = 30;
+    } else if (leveltgm <= 999) {
+      this.areLimit = 12;
+      lineARE = 0;
+      settings.DAS = 6;
+      settings["Lock Delay"] = 17;
+    } else if (leveltgm <= 1099) {
+      this.areLimit = 6;
+      lineARE = 6;
+      settings.DAS = 6;
+      settings["Lock Delay"] = 17;
+    } else if (leveltgm <= 1199) {
+      this.areLimit = 5;
+      lineARE = 6;
+      settings.DAS = 6;
+      settings["Lock Delay"] = 15;
+    } else {
+      this.areLimit = 4;
+      lineARE = 6;
+      settings.DAS = 6;
+      settings["Lock Delay"] = 15;
+    } 
+    
+  }
+    else { 
     this.gravity = gravityUnit;
   }
   if (gametype === 0){
@@ -144,6 +293,7 @@ Piece.prototype.new = function(index) {
   if(landed && (this.lockDelay >= this.lockDelayLimit)) {
     this.checkLock();
   }
+  this.delayCounting = false;
 }
 Piece.prototype.tryKickList = function(kickList, rotated, newPos, offsetX, offsetY) {
   for (var k = 0, len = kickList.length; k < len; k++) {
@@ -162,6 +312,9 @@ Piece.prototype.tryKickList = function(kickList, rotated, newPos, offsetX, offse
   }
 }
 Piece.prototype.rotate = function(direction) {
+  if (this.delayCounting === true) {
+    this.rotateLimit++
+  }
 sound.playse("rotate");
   // Goes thorugh kick data until it finds a valid move.
   var curPos = this.pos.mod(4);
@@ -218,6 +371,7 @@ Piece.prototype.checkShift = function() {
     this.arrDelay = 0;
     this.shiftReleased = true;
     this.shiftDir = 1;
+    
     this.finesse++;
   }
   // Shift key released event.
@@ -257,6 +411,7 @@ Piece.prototype.checkShift = function() {
   if (this.shiftDir) {
     // 1. When key pressed instantly move over once.
     if (this.shiftReleased && settings.DAS !== 0) {
+//      console.log("moveright")
       this.shift(this.shiftDir);
       this.shiftDelay++;
       this.shiftReleased = false;
@@ -279,6 +434,7 @@ Piece.prototype.checkShift = function() {
     */
       if (this.arrDelay === settings.ARR && settings.ARR !== 0) {
         this.shift(this.shiftDir);
+//        console.log("moveright")
       }
     }
   }
@@ -294,6 +450,7 @@ Piece.prototype.shift = function(direction) {
   
   this.arrDelay = 0;
   if (settings.ARR === 0 && this.shiftDelay === settings.DAS) {
+    
     while (true) {
       if (this.moveValid(direction, 0, this.tetro)) {
         
@@ -314,6 +471,9 @@ Piece.prototype.shift = function(direction) {
       }
     }
   } else if (this.moveValid(direction, 0, this.tetro)) {
+    if (this.delayCounting == true) {
+      this.moveLimit++
+    }
     this.x += direction;
     sound.playse("move");
   }
@@ -345,13 +505,22 @@ Piece.prototype.shiftDown = function() {
 }
 Piece.prototype.hardDrop = function() {
   if (gametype !== 8) {
-    sound.playse("harddrop");
-    usedHardDrop = true
+    
+    if (gameparams.classicRule === true) {
+      usedHardDrop = false
+    } else {
+      sound.playse("harddrop");
+      usedHardDrop = true
+    }
+    
     var distance = this.getDrop(2147483647);
     this.y += distance;
     score = score.add(bigInt(distance + this.lockDelayLimit - this.lockDelay));
     //statisticsStack();
-    this.lockDelay = this.lockDelayLimit;
+    if (gameparams.classicRule !== true) {
+      this.lockDelay = this.lockDelayLimit;
+    }
+    
   }
 }
 Piece.prototype.getDrop = function (distance) {
@@ -391,6 +560,9 @@ Piece.prototype.hold = function () {
   }
 
 }
+
+var classicRuleDelayLast = 0;
+
 /**
  * Checks if position and orientation passed is valid.
  *  We call it for every action instead of only once a frame in case one
@@ -410,7 +582,35 @@ Piece.prototype.moveValid = function(cx, cy, tetro) {
       }
     }
   }
-  this.lockDelay = 0;
+  if (gametype === 9) {
+    if (gameparams.classicRule !== true) {
+      if (landed) {
+        this.delayCounting = true;
+        if (this.moveLimit < 11 && this.rotateLimit < 8) {
+          this.lockDelay = 0;
+        } else {
+          
+        }
+      } else {
+        this.lockDelay = 0;
+      }
+    } else {
+      if (classicRuleDelayLast < Math.floor(this.y)) {
+        this.lockDelay = 0;
+      }
+      classicRuleDelayLast = Math.floor(this.y) 
+      
+      
+      if (landed) {
+      } else {
+//      this.lockDelay = 0;
+    }
+    }
+    
+  } else {
+    this.lockDelay = 0;
+  }
+  
   return true;
 }
 
@@ -441,6 +641,10 @@ Piece.prototype.checkLock = function() {
           lastYFrame = 0;
         }
         sound.playse("lock");
+        if (gameparams.classicRule == true) {
+          this.lockDelay = 0;
+        }
+        
       }
       usedHardDrop = false
       this.dirty = true;
@@ -475,8 +679,14 @@ Piece.prototype.checkLock = function() {
             } else {
               this.areLimit = 18
             }
-            
-          }
+            if (lineClear !== 0) {
+              this.areLimit += 17
+            } 
+          } else if (gametype === 9) {
+              if (lineClear !== 0) {
+                this.areLimit += lineARE;
+              }
+            }
           
           else {
             this.areLimit = 0;
@@ -500,6 +710,11 @@ var classicGravTest = 0;
 var classicStoredY = 0;
 Piece.prototype.update = function () {
   landed = !this.moveValid(0, 1, this.tetro);
+  
+  if (!(this.moveLimit < 10 && this.rotateLimit < 8)) {
+    this.lockDelay = this.lockDelayLimit;
+  }
+  
   if (gametype === 8) {
     if (flags.moveDown & keysDown) {
       
@@ -511,12 +726,12 @@ Piece.prototype.update = function () {
       classicSoftDrop = 0;
     }
     if (landed) {
+      
         if (flags.moveDown & keysDown) {
         classicGravTest += gravityArr[settings['Soft Drop']]
       }
         classicGravTest += classicStoredY;
         classicGravTest += this.gravity
-      console.log(classicGravTest)
         if (classicGravTest >= 1) {
           this.lockDelay = 99;
           classicGravTest = 0;
@@ -529,27 +744,55 @@ Piece.prototype.update = function () {
       classicGravTest = 0;
     }
   }
+//  if (gametype === 9) {
+//    if (this.moveLimit < 10 && this.rotateLimit < 8) {
+//          console.log("okay!" + piece.moveLimit + " " + piece.rotateLimit)
+//          this.lockDelay = 0;
+//        } else {
+//          this.lockDelay = this.lockDelayLimit;
+//        }
+//  }
+  
+  
   if (this.moveValid(0, 1, this.tetro) && gametype !== 8) {
     this.checkFall();
   }
 
   if (landed) {
-    this.lockDelay++;
+    if ((flags.moveDown & keysDown) && (gametype === 9)) {
+      if (gameparams.classicRule == true) {
+        this.lockDelay = this.lockDelayLimit;
+      } else {
+        this.lockDelay += 3;
+      }
+        
+    
   }
+    this.lockDelay++;
   this.checkLock();
+  }
 }
-
+var stepSEPlayed;
 Piece.prototype.draw = function() {
   clear(activeCtx);
   if (!this.dead) {
     this.drawGhost();
     if (settings.Ghost !== 3) {
       var a = void 0;
+      
       if (landed) {
+        
+        if (stepSEPlayed !== true && gametype !== 8) {
+          sound.playse("step")
+          stepSEPlayed = true
+        }
+        
         a = this.lockDelay / this.lockDelayLimit;
         if (this.lockDelayLimit === 0)
           a = 0;
         a = Math.pow(a,2)*0.5;
+      } else {
+        stepSEPlayed = false
       }
       draw(this.tetro, this.x, Math.floor(this.y) - stack.hiddenHeight, activeCtx, RotSys[settings.RotSys].color[this.index], a);
     }
