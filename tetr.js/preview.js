@@ -46,7 +46,7 @@ Preview.prototype.gen = function () {
     //return pieceList.sort(function() {return 0.5 - rng.next()});
     /* farter */ // proven random shuffle algorithm
     var rerollAllowed = true
-    for (var i = 0; i < 7; i++) {
+    for (var i = 0; i < 101; i++) {
       
       if (rerollAllowed == true) {
         var rand = ~~((8) * rng.next());

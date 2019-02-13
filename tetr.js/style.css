@@ -55,7 +55,6 @@ background-size: 1800% 1800%;
   animation-name: flicker;
   animation-duration: 1s;
   animation-timing-function: linear;
-  animation-delay: 2s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
@@ -556,4 +555,16 @@ i.left.material-icons, i.right.material-icons {
   font-weight: 800;
   font-size: 0.2em;
   transform: scaleX(1.3);
+}
+@keyframes drought-flash {
+  from {opacity: 1}
+  to {opacity: 0.1}
+}
+.drought-flash {
+  animation-name: drought-flash;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  
 }

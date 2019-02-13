@@ -61,11 +61,15 @@ Piece.prototype.new = function(index) {
     lineDrought = 0
     lineAmount++
     document.getElementById("ivalue").style.color = "#ffffff";
+    document.getElementById("linevector").classList.remove("drought-flash");
+  document.getElementById("linevector").src="linevector.svg";
     $setText(statsIpieces, lineAmount)
   } else {
     lineDrought++;
     if (lineDrought >= 13) {
       document.getElementById("ivalue").style.color = "#ff0000";
+      document.getElementById("linevector").classList.add("drought-flash");
+      document.getElementById("linevector").src="linevectorred.svg";
       if (lineDrought < 25) {
 //        sound.playse("drought")
       } else {
@@ -411,7 +415,7 @@ Piece.prototype.checkShift = function() {
   if (this.shiftDir) {
     // 1. When key pressed instantly move over once.
     if (this.shiftReleased && settings.DAS !== 0) {
-//      console.log("moveright")
+      
       this.shift(this.shiftDir);
       this.shiftDelay++;
       this.shiftReleased = false;
@@ -476,6 +480,9 @@ Piece.prototype.shift = function(direction) {
     }
     this.x += direction;
     sound.playse("move");
+  }
+  if (!(this.moveValid(direction, 0, this.tetro)) && (gametype === 8)) {
+    this.arrDelay = settings.ARR - 1;
   }
 }
 Piece.prototype.multiShift = function(direction, count) {

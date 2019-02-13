@@ -983,6 +983,8 @@ function scoreNesRefresh() {
 
 function init(gt, params) {
   document.getElementById("ivalue").style.color = "#ffffff";
+  document.getElementById("linevector").classList.remove("drought-flash");
+  document.getElementById("linevector").src="linevector.svg";
   leveltgm = 0;
   leveltgmvisible = 0;
   scoreNes = 0;
@@ -1299,7 +1301,7 @@ function statisticsStack() {
     $setText(statsLevel, "");
   }else if(gametype === 1 || gametype === 7){
     $setText(statsLines, lines);
-    $setText(statsLevel, "Lv. " + level);
+    $setText(statsLevel, "Lv. " + (level + 1));
   }else if(gametype === 8){
     $setText(statsLines, lines);
     $setText(statsLevel, "Lv. " + level);
@@ -1310,7 +1312,7 @@ function statisticsStack() {
     
   }else if (gametype === 6){
     $setText(statsLines, lines);
-    $setText(statsLevel, "Lv. M" + level);
+    $setText(statsLevel, "Lv. M" + (level + 1));
     
   }else if (gametype === 3){
     if (gameparams["digOffset"] || gameparams["digOffset"] !== 0){
@@ -1663,7 +1665,6 @@ function makeSprite() {
       spriteCtx.fillStyle = "#000";
       spriteCtx.fillRect(x, 0, cellSize, cellSize);
       
-//      spriteCtx.fillStyle = shaded[i][1];
       spriteCtx.fillStyle = "#fff";
       spriteCtx.fillRect(x + cellSize/7.5, 0 + cellSize/7.5, cellSize/1.4, cellSize/1.4)
       
